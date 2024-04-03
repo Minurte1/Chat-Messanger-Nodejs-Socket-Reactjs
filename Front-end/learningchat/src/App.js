@@ -12,7 +12,10 @@ function App() {
 
   useEffect(() => {
     // Lấy danh sách tin nhắn từ server khi component được tải
-    fetchMessages();
+
+    const interval = setInterval(fetchMessages, 1000);
+
+    // Code bạn muốn chạy mỗi giây ở đây
 
     // Lắng nghe sự kiện "message" từ server
     socket.on("message", (message) => {
@@ -22,6 +25,7 @@ function App() {
     return () => {
       // Xóa lắng nghe khi component unmount
       socket.disconnect();
+      clearInterval(interval);
     };
   }, []);
   // Chỉ chạy một lần sau khi component được render
@@ -43,7 +47,7 @@ function App() {
       .post(`${ENDPOINT}/messages`, newMessage)
       .then(() => {
         setinputMess(""); // Xóa input sau khi gửi
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         console.error("Error sending message:", error);
