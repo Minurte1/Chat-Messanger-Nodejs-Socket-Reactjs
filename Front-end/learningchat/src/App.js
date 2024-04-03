@@ -1,51 +1,78 @@
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
+import socketIOClient from "socket.io-client";
+import axios from "axios";
 
-const socket = io("http://localhost:3001"); // Thay đổi URL nếu cần
+const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
+  const [inputMess, setinputMess] = useState("");
+  const [inputUser, setinputUser] = useState("");
+  const socket = socketIOClient(ENDPOINT);
 
   useEffect(() => {
-    socket.on("message", (message) => {
-      setMessages([...messages, message]);
-    });
-  }, [messages]);
+    // Lấy danh sách tin nhắn từ server khi component được tải
+    fetchMessages();
 
-  const sendMessage = () => {
-    if (name && message) {
-      socket.emit("message", { name, message }); // Gửi tin nhắn tới server
-      setMessage("");
+    // Lắng nghe sự kiện "message" từ server
+    socket.on("message", (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    });
+
+    return () => {
+      // Xóa lắng nghe khi component unmount
+      socket.disconnect();
+    };
+  }, []);
+  // Chỉ chạy một lần sau khi component được render
+
+  const fetchMessages = async () => {
+    try {
+      const response = await axios.get(`${ENDPOINT}/messages`);
+      setMessages(response.data);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
     }
+  };
+
+  const sendMessage = (event) => {
+    // Gửi tin nhắn mới lên server
+
+    const newMessage = { name: inputUser, message: inputMess };
+    axios
+      .post(`${ENDPOINT}/messages`, newMessage)
+      .then(() => {
+        setinputMess(""); // Xóa input sau khi gửi
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
   };
 
   return (
     <div>
+      <h1>Realtime Chat App</h1>
       <div>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <br />
-        <input
-          type="text"
-          placeholder="Message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <br />
-        <button onClick={sendMessage}>Send</button>
-      </div>
-      <div>
-        {messages.map((msg, index) => (
+        {messages.map((message, index) => (
           <div key={index}>
-            <strong>{msg.name}</strong>: {msg.message}
+            <strong>{message.name}: </strong>
+            {message.message}
           </div>
         ))}
+      </div>
+      <div>
+        <input
+          type="text"
+          value={inputUser}
+          onChange={(e) => setinputUser(e.target.value)}
+        />
+        <input
+          type="text"
+          value={inputMess}
+          onChange={(e) => setinputMess(e.target.value)}
+        />
+        <button onClick={sendMessage}>Send</button>
       </div>
     </div>
   );
