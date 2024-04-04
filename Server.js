@@ -9,7 +9,6 @@ var io = require("socket.io")(http, {
     methods: ["GET", "POST"],
   },
 });
-
 var mongoose = require("mongoose");
 const cors = require("cors");
 app.use(express.static(__dirname));
@@ -17,6 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
+// ---------------------------------------------------------------------------------------------------
 const dbUrl = "mongodb://localhost:27017/chat";
 mongoose
   .connect(dbUrl, {
@@ -78,9 +78,61 @@ app.post("/api/createUser", async (req, res) => {
   }
 });
 
-// Tạo một user mới
+// Tạo một endpoint để lấy danh sách các cuộc trò chuyện mà một người dùng đã tham gia
+app.get("/api/conversations/:userId", async (req, res) => {
+  try {
+    // Lấy ID của người dùng từ request parameters
+    const userId = req.params.userId;
+    console.log(userId);
+    // Tìm kiếm người dùng trong cơ sở dữ liệu bằng ID
+    const user = await User.findById(userId);
 
-// Tạo một conversation mới
+    // Kiểm tra xem người dùng có tồn tại không
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Lấy danh sách các cuộc trò chuyện mà người dùng đã tham gia
+    const conversations = await Conversation.find({ participants: userId });
+    console.log("Trả conversations =>", conversations);
+    // Trả về danh sách các cuộc trò chuyện
+    res.status(200).json(conversations);
+  } catch (err) {
+    console.error(err);
+    // Trả về lỗi nếu có lỗi xảy ra trong quá trình xử lý
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/login", async (req, res) => {
+  try {
+    console.log("Hello login");
+
+    console.log("email =>", req.body);
+    const email = req.body.valueLogin;
+    const password = req.body.password;
+    // Tìm kiếm người dùng trong cơ sở dữ liệu dựa trên email`
+    const user = await User.findOne({ email, password });
+
+    // Kiểm tra xem người dùng có tồn tại không
+    if (!user) {
+      return res.status(404).json({ message: "User not found", EC: 1 });
+    }
+
+    // Kiểm tra mật khẩu
+    console.log("User đăng nhập thành công !!");
+    // Phản hồi với mã trạng thái 200 và thông tin người dùng (ví dụ: token JWT) để đăng nhập thành công
+    res.status(200).json({ message: "Login successful", EC: 0, _id: user });
+  } catch (err) {
+    console.error(err);
+    // Phản hồi với mã trạng thái 500 để cho biết có lỗi xảy ra
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// Tạo một user mới
+//Click vào để bắt đầu nhắn với 1nguoi mới
+// Tạo một conversation mới`
 app.post("/api/createConversation", async (req, res) => {
   try {
     const { participants } = req.body;
@@ -101,7 +153,7 @@ app.post("/api/createConversation", async (req, res) => {
     res.sendStatus(500);
   }
 });
-
+//Đang nhắn
 // Tạo một tin nhắn mới và thêm vào conversation
 app.post("/api/addMessageToConversation", async (req, res) => {
   try {
@@ -134,6 +186,7 @@ app.post("/api/addMessageToConversation", async (req, res) => {
     res.sendStatus(500);
   }
 });
+
 // API để lấy tin nhắn dựa trên ID của cuộc trò chuyện
 app.get("/api/getMessages/:conversationId", async (req, res) => {
   try {
@@ -191,7 +244,7 @@ app.post("/messages", async (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("a user connected");
+  // console.log("a user connected");
 
   // Lắng nghe sự kiện "message" từ client
   socket.on("message", async (message) => {

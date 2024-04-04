@@ -4,12 +4,14 @@ import "../component/Login.css"; // Import CSS file
 import LogoFb from "./image/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LoginUser } from "../service/UserService";
+import { LoginUser, ListConversations } from "../service/UserService";
+
 const LoginForm = () => {
   const navigate = useNavigate();
   const [valueLogin, setvalueLogin] = useState("");
   const [password, setPassword] = useState("");
   const [objectCheckInput, setObjectCheckInput] = useState("");
+  const [conversations, setConversations] = useState([]);
   const defaultValidInput = {
     isValueLogin: true,
     isPassword: true,
@@ -39,11 +41,16 @@ const LoginForm = () => {
         token: "fake token",
       };
       let response = await LoginUser(valueLogin, password);
+      console.log(response.data.message);
       if (response && response.data.EC === 0) {
         sessionStorage.setItem("account", JSON.stringify(data));
-        navigate("/users");
+        console.log("id=>", response.data._id._id);
+        await ListConversations(response.data._id._id);
+        // console.log("check response =>", response);
+        navigate("/message");
+
         toast.success(response.data.EM);
-        window.location.reload();
+        // window.location.reload();
       }
       if (response && response.data.EC !== 0) {
         toast.error(response.data.EM);
