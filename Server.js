@@ -77,13 +77,23 @@ app.post("/api/createUser", async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-// Tạo một endpoint để lấy danh sách các cuộc trò chuyện mà một người dùng đã tham gia
-app.get("/api/conversations/:userId", async (req, res) => {
+//hiển thị list tất cả các user
+app.get("/allusers", async (req, res) => {
   try {
-    // Lấy ID của người dùng từ request parameters
-    const userId = req.params.userId;
-    console.log(userId);
+    // Lấy tất cả các người dùng từ cơ sở dữ liệu
+    const users = await User.find();
+    res.status(200).json(users); // Trả về danh sách các người dùng
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+// Tạo một endpoint để lấy danh sách các cuộc trò chuyện mà một người dùng đã tham gia
+app.post("/api/conversations", async (req, res) => {
+  try {
+    // Lấy ID của người dùng từ request body
+    const userId = req.body.userId;
+
     // Tìm kiếm người dùng trong cơ sở dữ liệu bằng ID
     const user = await User.findById(userId);
 
@@ -94,7 +104,7 @@ app.get("/api/conversations/:userId", async (req, res) => {
 
     // Lấy danh sách các cuộc trò chuyện mà người dùng đã tham gia
     const conversations = await Conversation.find({ participants: userId });
-    console.log("Trả conversations =>", conversations);
+
     // Trả về danh sách các cuộc trò chuyện
     res.status(200).json(conversations);
   } catch (err) {

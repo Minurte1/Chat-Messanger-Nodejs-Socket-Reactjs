@@ -15,10 +15,12 @@ const LoginUser = (valueLogin, password) => {
   });
 };
 const ListConversations = (idUser) => {
-  console.log("idUser =>", idUser);
-  return axios.get(
-    `http://localhost:3001/api/conversations/${idUser.toString()}`
-  );
+  return axios.post("http://localhost:3001/api/conversations", {
+    userId: idUser,
+  });
+};
+const GetListAllUser = () => {
+  return axios.get("http://localhost:3001/allusers");
 };
 
-export { registerNewUser, LoginUser, ListConversations };
+export { registerNewUser, LoginUser, ListConversations, GetListAllUser };

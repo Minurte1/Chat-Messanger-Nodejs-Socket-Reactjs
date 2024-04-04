@@ -2,83 +2,64 @@ import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { ListConversations } from "../service/UserService";
+
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [inputMess, setinputMess] = useState("");
   const [inputUser, setinputUser] = useState("");
+  const [listUser, setListUser] = useState([]);
   const socket = socketIOClient(ENDPOINT);
-
-  const [conversations, setConversations] = useState([]);
   const id = useParams();
   console.log("check id paramaer =>", id);
+
   useEffect(() => {
-    // Gọi API để lấy danh sách cuộc trò chuyện khi component được render
-    const fetchConversations = async () => {
+    const fetchMessages = async () => {
       try {
-        // Gọi API và truyền idUser vào
-        const response = await ListConversations(id);
-
-        // Lấy danh sách cuộc trò chuyện từ kết quả trả về
-        const conversationsData = response.data;
-
-        // Cập nhật state conversations với danh sách cuộc trò chuyện từ API
-        setConversations(conversationsData);
+        const response = await axios.get(`${ENDPOINT}/messages`);
+        setMessages(response.data);
       } catch (error) {
-        console.error("Error fetching conversations:", error);
+        console.error("Error fetching messages:", error);
       }
     };
 
-    // Gọi hàm fetchConversations để lấy dữ liệu từ API
-    fetchConversations();
-  }, []);
+    fetchMessages(); // Gọi hàm lấy tin nhắn khi component được tạo
 
-  useEffect(() => {
-    // Lấy danh sách tin nhắn từ server khi component được tải
-
-    const interval = setInterval(fetchMessages, 1000);
-
-    // Code bạn muốn chạy mỗi giây ở đây
-
-    // Lắng nghe sự kiện "message" từ server
     socket.on("message", (message) => {
       setMessages((prevMessages) => [...prevMessages, message]);
     });
 
     return () => {
-      // Xóa lắng nghe khi component unmount
       socket.disconnect();
-      clearInterval(interval);
     };
+  }, [socket]);
+
+  useEffect(() => {
+    const fetchListUser = async () => {
+      try {
+        const response = await axios.get(`${ENDPOINT}/allusers`);
+        setListUser(response.data);
+      } catch (error) {
+        console.error("Error fetching list of users:", error);
+      }
+    };
+
+    fetchListUser(); // Gọi hàm lấy danh sách người dùng khi component được tạo
   }, []);
-  // Chỉ chạy một lần sau khi component được render
 
-  const fetchMessages = async () => {
-    try {
-      const response = await axios.get(`${ENDPOINT}/messages`);
-      setMessages(response.data);
-    } catch (error) {
-      console.error("Error fetching messages:", error);
-    }
-  };
-
-  const sendMessage = (event) => {
-    // Gửi tin nhắn mới lên server
-
+  const sendMessage = () => {
     const newMessage = { name: inputUser, message: inputMess };
     axios
       .post(`${ENDPOINT}/messages`, newMessage)
       .then(() => {
-        setinputMess(""); // Xóa input sau khi gửi
-        // window.location.reload();
+        setinputMess("");
       })
       .catch((error) => {
         console.error("Error sending message:", error);
       });
   };
-  console.log("check conversations =>", conversations);
+  console.log(listUser);
   return (
     <div>
       <h1>Realtime Chat App</h1>
