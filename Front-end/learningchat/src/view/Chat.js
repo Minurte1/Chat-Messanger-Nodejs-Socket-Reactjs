@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import socketIOClient from "socket.io-client";
 import axios from "axios";
-
+import { useParams } from "react-router-dom";
+import { ListConversations } from "../service/UserService";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
@@ -9,6 +10,30 @@ const Chat = () => {
   const [inputMess, setinputMess] = useState("");
   const [inputUser, setinputUser] = useState("");
   const socket = socketIOClient(ENDPOINT);
+
+  const [conversations, setConversations] = useState([]);
+  const id = useParams();
+  console.log("check id paramaer =>", id);
+  useEffect(() => {
+    // Gọi API để lấy danh sách cuộc trò chuyện khi component được render
+    const fetchConversations = async () => {
+      try {
+        // Gọi API và truyền idUser vào
+        const response = await ListConversations(id);
+
+        // Lấy danh sách cuộc trò chuyện từ kết quả trả về
+        const conversationsData = response.data;
+
+        // Cập nhật state conversations với danh sách cuộc trò chuyện từ API
+        setConversations(conversationsData);
+      } catch (error) {
+        console.error("Error fetching conversations:", error);
+      }
+    };
+
+    // Gọi hàm fetchConversations để lấy dữ liệu từ API
+    fetchConversations();
+  }, []);
 
   useEffect(() => {
     // Lấy danh sách tin nhắn từ server khi component được tải
@@ -53,7 +78,7 @@ const Chat = () => {
         console.error("Error sending message:", error);
       });
   };
-
+  console.log("check conversations =>", conversations);
   return (
     <div>
       <h1>Realtime Chat App</h1>

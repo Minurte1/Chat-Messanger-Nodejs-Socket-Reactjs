@@ -12,7 +12,7 @@ function App() {
         <div className="app-header">
           <Routes>
             <Route
-              path="/message"
+              path="/message/*"
               element={
                 <>
                   <Chat />

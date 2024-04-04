@@ -46,8 +46,8 @@ const LoginForm = () => {
         sessionStorage.setItem("account", JSON.stringify(data));
         console.log("id=>", response.data._id._id);
         await ListConversations(response.data._id._id);
-        // console.log("check response =>", response);
-        navigate("/message");
+
+        navigate(`/message/${response.data._id._id}`);
 
         toast.success(response.data.EM);
         // window.location.reload();
