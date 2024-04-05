@@ -3,6 +3,7 @@ import socketIOClient from "socket.io-client";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Chat.css";
+import { set } from "mongoose";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
@@ -10,9 +11,10 @@ const Chat = () => {
   const [inputMess, setinputMess] = useState("");
   const [inputUser, setinputUser] = useState("");
   const [listUser, setListUser] = useState([]);
+
   const socket = socketIOClient(ENDPOINT);
   const id = useParams();
-  console.log("check id paramaer =>", id);
+  const [IdMess, setIdMess] = useState(id);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -60,6 +62,7 @@ const Chat = () => {
       });
   };
   console.log(listUser);
+  console.log("check id Lister = >", listUser[0]);
   return (
     // <div>
     //   <h3>All User</h3>
@@ -147,55 +150,29 @@ const Chat = () => {
               </div>
             </div>
             {/* Render dữ liệu */}
-            <div className="container-chat_Doatchat-TinNhan">
-              <div className="container-chat_Doatchat-TinNhan">
-                <img
-                  className="Doatchat-TinNhan-Avt"
-                  src={require("../public/image/avt.jpg")}
-                />
-                <div className="Doatchat-TinNhan-name">
-                  <p className="name">Hoàng Phúc</p>
-                  <div className="MessAndTime">
-                    {" "}
-                    <p className="mess">Phúc ơiiiii </p>{" "}
-                    <span className="time">4 phút</span>
+            {listUser.map(
+              (user, index) =>
+                user &&
+                user._id.toString() !== IdMess.toString() && (
+                  <div key={index} className="container-chat_Doatchat-TinNhan">
+                    <div className="container-chat_Doatchat-TinNhan">
+                      <img
+                        className="Doatchat-TinNhan-Avt"
+                        src={require("../public/image/avt.jpg")}
+                      />
+                      <div className="Doatchat-TinNhan-name">
+                        <p className="name">
+                          {user.username} {user._id}
+                        </p>
+                        <div className="MessAndTime">
+                          <p className="mess">Phúc ơiiiii </p>{" "}
+                          <span className="time">4 phút</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="container-chat_Doatchat-TinNhan">
-              <div className="container-chat_Doatchat-TinNhan">
-                <img
-                  className="Doatchat-TinNhan-Avt"
-                  src={require("../public/image/avt.jpg")}
-                />
-                <div className="Doatchat-TinNhan-name">
-                  <p className="name">Hoàng Phúc</p>
-                  <div className="MessAndTime">
-                    {" "}
-                    <p className="mess">Phúc ơiiiii </p>{" "}
-                    <span className="time">4 phút</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="container-chat_Doatchat-TinNhan">
-              <div className="container-chat_Doatchat-TinNhan">
-                <img
-                  className="Doatchat-TinNhan-Avt"
-                  src={require("../public/image/avt.jpg")}
-                />
-                <div className="Doatchat-TinNhan-name">
-                  <p className="name">Hoàng Phúc</p>
-                  <div className="MessAndTime">
-                    {" "}
-                    <p className="mess">Phúc ơiiiii </p>{" "}
-                    <span className="time">4 phút</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+                )
+            )}
           </div>
 
           <div className="NoiDungChat">
