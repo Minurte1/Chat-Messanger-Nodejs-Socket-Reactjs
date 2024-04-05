@@ -121,9 +121,117 @@ const Chat = () => {
         </div>
         <div className="container-bodyChat">
           <div className="Doatchat">
-            <p>Đoạn chat</p>
+            <div className="Doatchat-tieude">
+              <p>Đoạn chat</p>
+              <div className="Doatchat-Ellipsis">
+                <i class="fa-solid fa-ellipsis"></i>
+              </div>
+              <div className="Doatchat-fa-pen-to-square">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </div>
+            </div>
+            <div className="container-chat_Doatchat_InputSearch">
+              {" "}
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span>Tìm kiếm trên Messenger</span>
+            </div>
+            <div className="container-chat_Doatchat-ChucNang">
+              <div className="container-chat_Doatchat-ChucNang-1">
+                {" "}
+                <p>Hộp thư</p>
+              </div>
+
+              <div className="container-chat_Doatchat-ChucNang-2">
+                {" "}
+                <p>Cộng đồng</p>
+              </div>
+            </div>
+            {/* Render dữ liệu */}
+            <div className="container-chat_Doatchat-TinNhan">
+              <div className="container-chat_Doatchat-TinNhan">
+                <img
+                  className="Doatchat-TinNhan-Avt"
+                  src={require("../public/image/avt.jpg")}
+                />
+                <div className="Doatchat-TinNhan-name">
+                  <p className="name">Hoàng Phúc</p>
+                  <div className="MessAndTime">
+                    {" "}
+                    <p className="mess">Phúc ơiiiii </p>{" "}
+                    <span className="time">4 phút</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="container-chat_Doatchat-TinNhan">
+              <div className="container-chat_Doatchat-TinNhan">
+                <img
+                  className="Doatchat-TinNhan-Avt"
+                  src={require("../public/image/avt.jpg")}
+                />
+                <div className="Doatchat-TinNhan-name">
+                  <p className="name">Hoàng Phúc</p>
+                  <div className="MessAndTime">
+                    {" "}
+                    <p className="mess">Phúc ơiiiii </p>{" "}
+                    <span className="time">4 phút</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="container-chat_Doatchat-TinNhan">
+              <div className="container-chat_Doatchat-TinNhan">
+                <img
+                  className="Doatchat-TinNhan-Avt"
+                  src={require("../public/image/avt.jpg")}
+                />
+                <div className="Doatchat-TinNhan-name">
+                  <p className="name">Hoàng Phúc</p>
+                  <div className="MessAndTime">
+                    {" "}
+                    <p className="mess">Phúc ơiiiii </p>{" "}
+                    <span className="time">4 phút</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="NoiDungChat"></div>
+
+          <div className="NoiDungChat">
+            <div className="NoiDungChat-Navbar">
+              <div className="NoiDungChat-Navbar-1">
+                <div className="NoiDungChat-Navbar-1-TinNhan">
+                  <img
+                    className="NoiDungChat-Navbar-1-TinNhan-Avt"
+                    src={require("../public/image/avt.jpg")}
+                  />
+                  <div className="NoiDungChat-Navbar-1-TinNhan-name">
+                    <p className="NoiDungChat-Navbar-1name">Hoàng Phúc</p>
+                    <div className="NoiDungChat-Navbar-1MessAndTime">
+                      {" "}
+                      <span className="NoiDungChat-Navbar-1time">
+                        Hoạt động 4 phút trước
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="NoiDungChat-Navbar-2"></div>
+              <div className="NoiDungChat-Navbar-3">
+                <div className="NoiDungChat-Navbar-3-phone">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+                <div className="NoiDungChat-Navbar-3-phone margin10px">
+                  <i class="fa-solid fa-video"></i>
+                </div>
+                <div className="NoiDungChat-Navbar-3-phone">
+                  <i class="fa-solid fa-circle-info"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="InfoUserChat"></div>
         </div>
       </div>

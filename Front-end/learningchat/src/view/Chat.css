@@ -1,13 +1,13 @@
 .container-chat{
-    border: 1px solid red;
+
     width: 100%;
-    height: 700px;
+    height: 100vh;
     background-color: #242526;
 }
 .container-chat_Navbar{
     width: 100%;
     height: 45px;
-    border: 1px solid rgb(19, 67, 130);
+ 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -124,7 +124,7 @@
 .Doatchat{
     width: 22%;
     height: 100%;
-    border: 1px solid red;
+  
 }
 .NoiDungChat{
     width: 56%;
@@ -136,10 +136,285 @@
     height: 100%;
     border: 1px solid red;
 }
+.Doatchat-tieude{
+    width: 100%;
+    height: 60px;
+display: flex;
+/* justify-content: center; */
+align-items: center;
 
-.Doatchat>p{
+}
+.Doatchat-tieude>p{
     font-family: Helvetica, Arial, sans-serif;
 color: white;
 font-size: 25px;
 font-weight: 600;
+margin-left: 3%;
+}
+
+.Doatchat-Ellipsis{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+   background-color: #4e4f50;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 34%;
+}.fa-ellipsis{
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    z-index: 1;
+}
+.Doatchat-fa-pen-to-square{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+   background-color: #4e4f50;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+margin-left: 3%;
+}
+.fa-pen-to-square{
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    z-index: 1;
+}
+/* --------------------------------------------- */
+.container-chat_Doatchat_InputSearch{
+    width: 95%;
+    height: 40px;
+  margin-left: 5px;
+ border-radius: 20px;
+ align-items: center;
+ display: flex;
+ background-color: #3a3b3c;
+}
+.container-chat_Doatchat_InputSearch>span{
+    
+        color: #9ca3ae;
+
+}
+.fa-magnifying-glass{
+    font-size: 15px;
+    color: #9ca3ae;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+
+.container-chat_Doatchat-ChucNang{
+    margin-top: 1%;
+    height: 50px;
+    width: 100%;
+ display: flex;
+ align-items: center;
+
+}
+.container-chat_Doatchat-ChucNang-1{
+    width: 30%;
+    height: 80%;
+    border-radius: 20px;
+    position: relative;
+    background-color: #394d62;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2%;
+}
+.container-chat_Doatchat-ChucNang-2{
+    width: 30%;
+    height: 80%;
+    border-radius: 20px;
+    position: relative;
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container-chat_Doatchat-ChucNang-1>p{
+    color: #83bdff;
+    position: absolute;
+    font-size: 16px;
+    
+}
+.container-chat_Doatchat-ChucNang-2>p{
+    color: #ffffff;
+    position: absolute;
+    font-size: 16px;
+}
+.container-chat_Doatchat-TinNhan{
+    margin-top: 1%;
+    width: 95%;
+    height: auto;
+    border-radius: 20px;
+    position: relative;
+    /* background-color: #394d62; */
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    margin-left: 2%;
+
+}
+.container-chat_Doatchat-TinNhan{
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+
+}
+.Doatchat-TinNhan-Avt{
+    width: 50px;
+    height: 50px;
+    margin-left: -20px;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: 0.5%;
+}
+.Doatchat-TinNhan-name{
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    margin-left: 60px;
+    
+
+}
+.name{
+    font-size: 15px;
+   margin-top: 5px;
+    color: white;
+    font-weight: 600;
+}
+.mess{
+    font-size: 15px;
+
+    color: white;
+}
+.time{
+    color: #999b9e;
+    font-size: 15px;
+    margin-left: 10px;
+}
+.MessAndTime{
+    display: flex;
+}
+.NoiDungChat-Navbar{
+    width: 100%;
+    height: 76px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   box-shadow: 0px 1px 0px #000000;
+}
+.NoiDungChat-Navbar-1{
+    width: 29%;
+    height: 80%;
+   
+}
+.NoiDungChat-Navbar-2{
+    width: 39%;
+    height: 80%;
+    
+}
+.NoiDungChat-Navbar-3{
+    width: 19%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10%;
+}
+
+
+
+
+
+
+.NoiDungChat-Navbar-1-TinNhan{
+    position: relative;
+    width: 100%;
+    height: 60px;
+    display: flex;
+
+border-radius: 20px;
+align-items: center;
+padding-left: 5px;
+}
+.NoiDungChat-Navbar-1-TinNhan:hover{
+    background-color: #3a3b3c;
+    cursor: pointer;
+}
+.NoiDungChat-Navbar-1-TinNhan-Avt{
+    width: 50px;
+    height: 50px;
+    margin-left: -20px;
+    border-radius: 50%;
+    position: absolute;
+    margin-left: 0.5%;
+}
+.NoiDungChat-Navbar-1-TinNhan-name{
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    margin-left: 60px;
+    margin-top: 5px;
+    
+
+}
+.NoiDungChat-Navbar-1name{
+    font-size: 15px;
+   margin-top: 5px;
+    color: white;
+    font-weight: 600;
+}
+.NoiDungChat-Navbar-1mess{
+    font-size: 15px;
+
+    color: white;
+}
+.NoiDungChat-Navbar-1time{
+    color: #999b9e;
+    font-size: 13px;
+  
+}
+.NoiDungChat-Navbar-1MessAndTime{
+    display: flex;
+}
+.margin10px{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.NoiDungChat-Navbar-3-phone{
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.NoiDungChat-Navbar-3-phone:hover{
+    background-color: #3a3b3c;
+    cursor: pointer;
+}
+.fa-phone{
+    font-size: 18px;
+    color: #1a91ff;
+    position: absolute;
+}
+
+.fa-video{
+    font-size: 18px;
+    color: #1a91ff;
+    position: absolute;
+}
+.fa-circle-info{
+    font-size: 18px;
+    color: #1a91ff;
+    position: absolute;
 }
