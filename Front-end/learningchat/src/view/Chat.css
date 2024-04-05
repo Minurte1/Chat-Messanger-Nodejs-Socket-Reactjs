@@ -1,0 +1,145 @@
+.container-chat{
+    border: 1px solid red;
+    width: 100%;
+    height: 700px;
+    background-color: #242526;
+}
+.container-chat_Navbar{
+    width: 100%;
+    height: 45px;
+    border: 1px solid rgb(19, 67, 130);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.container-chat_Navbar-1{
+    display: flex;
+   
+    align-items: center;
+    width: 30%;
+    height: 100%;
+}
+.logofb{
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+
+}
+.logoavt{
+    width: 40px;
+    height: 40px;
+    margin-left: -20px;
+    border-radius: 50%;
+
+}
+.container-chat_Navbar-1_InputSearch{
+    width: 50%;
+    height: 35px;
+  margin-left: 5px;
+ border-radius: 20px;
+ align-items: center;
+ display: flex;
+ background-color: #3a3b3c;
+}
+.fa-magnifying-glass{
+    font-size: 15px;
+    color: #9ca3ae;
+    margin-left: 15px;
+    margin-right: 5px;
+}
+.fa-house{
+    color: #9ca3ae;
+    font-size: 20px;
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    
+}
+.fa-user-group{
+    color: #9ca3ae;
+    font-size: 20px;
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+.fa-gamepad{
+    color: #9ca3ae;
+    font-size: 20px;
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+.fa-users{
+    color: #9ca3ae;
+    font-size: 20px;
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;  
+}
+.fa-bell{
+    color: #9ca3ae;
+    font-size: 20px;
+    width: 90px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;  
+}
+.container-chat_Navbar-1_InputSearch>span{
+    color: #9ca3ae;
+}
+.container-chat_Navbar-2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+    height: 100%;
+}
+.container-chat_Navbar-3{
+    display: flex;
+   justify-content: right;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+}
+.container-bodyChat{
+    width: 100%;
+    height:90%;
+    display: flex;
+    
+}
+.Doatchat{
+    width: 22%;
+    height: 100%;
+    border: 1px solid red;
+}
+.NoiDungChat{
+    width: 56%;
+    height: 100%;
+    border: 1px solid rgb(112, 73, 255);
+}
+.InfoUserChat{
+    width: 22%;
+    height: 100%;
+    border: 1px solid red;
+}
+
+.Doatchat>p{
+    font-family: Helvetica, Arial, sans-serif;
+color: white;
+font-size: 25px;
+font-weight: 600;
+}
