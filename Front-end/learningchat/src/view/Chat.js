@@ -14,7 +14,7 @@ const Chat = () => {
 
   const socket = socketIOClient(ENDPOINT);
   const id = useParams();
-  const [IdMess, setIdMess] = useState(id);
+  const [IdMess, setIdMess] = useState(JSON.stringify(id));
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -61,8 +61,13 @@ const Chat = () => {
         console.error("Error sending message:", error);
       });
   };
+
   console.log(listUser);
-  console.log("check id Lister = >", listUser[0]);
+  console.log("check id Lister = >", IdMess);
+  // Lấy giá trị của thuộc tính không rõ tên
+  const idValue = Object.values(id)[0];
+  console.log("Value of id = >", idValue);
+
   return (
     // <div>
     //   <h3>All User</h3>
@@ -153,7 +158,7 @@ const Chat = () => {
             {listUser.map(
               (user, index) =>
                 user &&
-                user._id.toString() !== IdMess.toString() && (
+                user._id !== idValue && (
                   <div key={index} className="container-chat_Doatchat-TinNhan">
                     <div className="container-chat_Doatchat-TinNhan">
                       <img
