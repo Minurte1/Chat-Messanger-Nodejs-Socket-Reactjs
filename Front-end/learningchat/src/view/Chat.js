@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -137,6 +137,19 @@ const Chat = () => {
 
   // Lấy giá trị của thuộc tính không rõ tên
   console.log(TinNhan);
+
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    // Function to scroll to bottom
+    const scrollToBottom = () => {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    };
+
+    // Scroll to bottom when TinNhan changes
+    scrollToBottom();
+  }, [TinNhan]); // Run when TinNhan changes
   return (
     // <div>
     //   <h3>All User</h3>
@@ -289,14 +302,47 @@ const Chat = () => {
             <div className="NoiDungChat-Body">
               <div className="NoiDungChat-Body">
                 <div
-                  className="NoiDungChat-Body-NoiDungChat"
+                  ref={chatContainerRef}
+                  className="NoiDungChat-Body-NoiDungChat chat-container"
                   id="messageContainer"
                 >
                   {/* Lặp qua mảng messages và render mỗi tin nhắn */}
                   {TinNhan.map((message) => (
                     <div key={message._id} className="message">
-                      <p>
-                        <strong>{message.name}:</strong> {message.message}
+                      <p
+                        className={`container-messs ${
+                          message.name !== NguoiMaBanMuonNhanTin
+                            ? "text-align-right justify-content-right"
+                            : ""
+                        }`}
+                      >
+                        <div className="container-messCha2">
+                          {message.name !== NguoiMaBanMuonNhanTin && (
+                            <div className="container-noidungtinnhan2 text-align-right">
+                              <p className="noidungtinnhan2 ">
+                                {message.message}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                        <div className="container-messCha">
+                          <img
+                            className={`NoiDungChat-NoiDung-1-TinNhan-Avt ${
+                              message.name === NguoiMaBanMuonNhanTin
+                                ? "image-Avta"
+                                : "display-none"
+                            }`}
+                            src={require("../public/image/avt.jpg")}
+                          />
+
+                          {message.name === NguoiMaBanMuonNhanTin && (
+                            <div className="container-noidungtinnhan">
+                              <p className="noidungtinnhan">
+                                {message.message}
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </p>
                     </div>
                   ))}

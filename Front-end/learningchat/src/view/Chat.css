@@ -533,6 +533,82 @@ cursor: pointer;
     background-color: #3a3b3c;
     cursor: pointer;
   }
-  .noidungtinnhan{
+ 
+
+  .NoiDungChat-NoiDung-1-TinNhan-Avt{
+    width: 25px;
+    height: 25px;
+    margin-left: 20px;
+    border-radius: 50%;
+   
+    margin-left: 0.5%;
+}
+
+
+.text-align-right{
+    text-align: right;
+}
+.image-Avta{
+   margin-top: 10px;
+}
+.noidungtinnhan2{
     color: white;
+    width: auto;
+    height: auto;  margin-left: 10px;
+    font-size: 14px;
+  text-align: right;
+  width: auto;
+  height: auto;
   }
+
+  
+  
+  .container-noidungtinnhan {
+    width: auto;
+    height: auto;
+    padding: 10px 15px;
+    background-color: #303030;
+    border-radius: 20px;
+    margin: 5px 10px;
+    word-wrap: break-word; 
+
+    max-width: 40%; /* Đặt giới hạn chiều rộng là 40% */
+  }
+  
+  .noidungtinnhan {
+    color: white;
+    font-size: 14px;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+  }
+  
+  .container-noidungtinnhan2 {
+    width: auto;
+    height: auto;
+   
+    padding-left: 10px;
+    padding-bottom: 10px;
+    padding-right: 15px;
+    padding-top: 10px;
+    background-color: #0084ff;
+    border-radius: 20px;
+    margin: 5px 10px;
+    word-wrap: break-word;  
+    max-width: 40%;
+    margin-right: 2px;
+    margin-left: auto; /* Đảm bảo nội dung tin nhắn sẽ nằm bên phải */
+  }
+  
+.display-none{
+    display: none;
+}
+.container-messCha{
+    display: flex;
+    width: 100%;
+
+}
+.container-messCha2{
+  display: flex;
+    width: 100%;
+}
