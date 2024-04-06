@@ -129,12 +129,13 @@
 .NoiDungChat{
     width: 56%;
     height: 100%;
-    border: 1px solid rgb(112, 73, 255);
+border-left: 0.5px solid #393a3b;
+border-right: 0.5px solid #393a3b;
 }
 .InfoUserChat{
     width: 22%;
     height: 100%;
-    border: 1px solid red;
+
 }
 .Doatchat-tieude{
     width: 100%;
@@ -308,7 +309,7 @@ margin-left: 3%;
    display: flex;
    align-items: center;
    justify-content: center;
-   box-shadow: 0px 1px 0px #000000;
+   box-shadow: 0px 2px 0px  #393a3b;
 }
 .NoiDungChat-Navbar-1{
     width: 29%;
@@ -417,4 +418,92 @@ padding-left: 5px;
     font-size: 18px;
     color: #1a91ff;
     position: absolute;
+}
+.NoiDungChat-Body{
+    width: 100%;
+    height: 89%;
+
+}.NoiDungChat-Body-NoiDungChat{
+    width: 100%;
+    height: 92%; 
+
+}
+.NoiDungChat-thanhChat{
+    width: 100%;
+    height: 8%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.NoiDungChat-thanhChat-1{
+    width:30px ;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: relative;
+}
+.logoinput{
+    font-size: 21px;
+    color: #1a91ff;
+    position: absolute;
+}
+.margin-left-20px{
+    margin-left: -40px;
+}
+.NoiDungChat-thanhChat-Input{
+    width: 75%;
+    height: 75%;
+    background-color: #3a3b3c;
+    margin-left: 15px;
+    border-radius: 25px;
+
+    
+}
+.NoiDungChat-thanhChat-Input-1{
+    width: 90%;
+    height: 100%;
+    outline: none;  
+    border: none;
+    border-radius: 25px;
+    background-color: #3a3b3c;
+    padding-left: 15px;
+    color: white;
+}
+.NoiDungChat-thanhChat-1:hover{
+background-color: #3a3b3c;
+cursor: pointer;
+}
+.margin5px{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.margin-right5px{
+    margin-right: 5px;
+}
+
+.NoiDungChat-thanhChat-3{
+    width:35px ;
+    height: 35px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: relative;
+    margin-right: -50px;
+    margin-left: 7px;
+}
+.CavoiCute{
+    
+ width: 25px;
+ height: 25px;
+ position: absolute;
+ z-index: 2;
+}
+.NoiDungChat-thanhChat-3:hover{
+    background-color: #3a3b3c;
+    cursor: pointer;
 }

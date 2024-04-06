@@ -212,6 +212,42 @@ const Chat = () => {
                 </div>
               </div>
             </div>
+
+            <div className="NoiDungChat-Body">
+              {/* Render tin nhắn */}
+              <div className="NoiDungChat-Body-NoiDungChat"></div>
+              {/* Nơi nhập tin nhắn */}
+              <div className="NoiDungChat-thanhChat">
+                <div className="NoiDungChat-thanhChat-1  margin-left-20px">
+                  <i class="fa-solid fa-circle-plus logoinput"></i>
+                </div>
+                <div className="NoiDungChat-thanhChat-1 margin5px">
+                  <i class="fa-regular fa-image  logoinput"></i>
+                </div>
+                <div className="NoiDungChat-thanhChat-1">
+                  <i class="fa-solid fa-face-smile logoinput margin-right5px"></i>
+                </div>
+                <div className="NoiDungChat-thanhChat-1">
+                  <i class="fa-solid fa-gift logoinput"></i>
+                </div>
+                <div className="NoiDungChat-thanhChat-Input">
+                  <input
+                    className="NoiDungChat-thanhChat-Input-1"
+                    placeholder="Aa"
+                    type="text"
+                    value={inputMess}
+                    onChange={(e) => setinputMess(e.target.value)}
+                  ></input>
+                </div>
+                <div className="NoiDungChat-thanhChat-3">
+                  <img
+                    className="CavoiCute"
+                    alt="🐳"
+                    src="https://static.xx.fbcdn.net/images/emoji.php/v9/tde/1.5/20/1f433.png"
+                  ></img>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div className="InfoUserChat"></div>
