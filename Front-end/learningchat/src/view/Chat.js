@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import socketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Chat.css";
@@ -7,36 +7,36 @@ import { set } from "mongoose";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
-  const [messages, setMessages] = useState([]);
   const [inputMess, setinputMess] = useState("");
   const [inputUser, setinputUser] = useState("");
   const [listUser, setListUser] = useState([]);
+  const [NguoiMaBanMuonNhanTin, setNguoiMaBanMuonNhanTin] = useState();
 
-  const socket = socketIOClient(ENDPOINT);
+  const [IdCoversation, setIdCoversation] = useState("");
+
   const id = useParams();
-  const [IdMess, setIdMess] = useState(JSON.stringify(id));
+
+  const idValue = Object.values(id)[0];
+
+  const [TinNhan, setTinNhan] = useState([]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const response = await axios.get(`${ENDPOINT}/messages`);
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
+    // Thiết lập kết nối với server socket
+    const socket = io(ENDPOINT);
 
-    fetchMessages(); // Gọi hàm lấy tin nhắn khi component được tạo
-
-    socket.on("message", (message) => {
-      setMessages((prevMessages) => [...prevMessages, message]);
+    // Lắng nghe sự kiện "message" từ server
+    socket.on("message", (data) => {
+      // Trích xuất tin nhắn từ dữ liệu nhận được
+      const newMessage = data.messageNe;
+      // Cập nhật state TinNhan bằng cách thêm tin nhắn mới vào mảng tin nhắn đã có
+      setTinNhan((prevMessages) => [...prevMessages, newMessage]);
     });
 
+    // Ngắt kết nối khi component unmount
     return () => {
       socket.disconnect();
     };
-  }, [socket]);
-
+  }, []);
   useEffect(() => {
     const fetchListUser = async () => {
       try {
@@ -49,9 +49,43 @@ const Chat = () => {
 
     fetchListUser(); // Gọi hàm lấy danh sách người dùng khi component được tạo
   }, []);
+  const SendMessNe = async () => {
+    try {
+      // Gửi yêu cầu POST đến server
+      const response = await axios.post(
+        "http://localhost:3001/api/addMessageToConversation",
+        {
+          senderUserId: idValue, // ID của người gửi tin nhắn
+          content: inputMess, // Nội dung của tin nhắn
+          conversationId: IdCoversation, // ID của cuộc trò chuyện
+        }
+      );
+      console.log("id", idValue, "mess", inputMess, "coverid=>", IdCoversation);
+      console.log("backend gui len ne =>", response.data.messageNe.message);
 
+      // Nếu yêu cầu thành công, in ra thông báo "Gửi tin nhắn thành công"
+      console.log("Gửi tin nhắn thành công");
+
+      setinputMess("");
+      const responseMess = await axios.post(
+        "http://localhost:3001/api/getMessages",
+        {
+          conversationId: IdCoversation, // Truyền id của user đó xuống server
+        }
+      );
+      setTinNhan(responseMess.data);
+
+      // Nếu bạn cần xử lý dữ liệu trả về từ server, bạn có thể làm ở đây
+      // Ví dụ: const data = response.data;
+    } catch (error) {
+      // Nếu có lỗi xảy ra, in ra thông báo lỗi
+      console.error("Lỗi khi gửi tin nhắn:", error);
+    }
+  };
   const sendMessage = () => {
-    const newMessage = { name: inputUser, message: inputMess };
+    alert("oke");
+    const newMessage = { IdUserSend: idValue, message: inputMess };
+
     axios
       .post(`${ENDPOINT}/messages`, newMessage)
       .then(() => {
@@ -61,13 +95,48 @@ const Chat = () => {
         console.error("Error sending message:", error);
       });
   };
+  const handlePressEnter = async (event) => {
+    if (event.charCode == 13) {
+      await SendMessNe();
+      event.preventDefault();
+    }
+  };
+  const handleUserIb = async (user) => {
+    setNguoiMaBanMuonNhanTin(Object.values(user)[2]);
 
-  console.log(listUser);
-  console.log("check id Lister = >", IdMess);
+    try {
+      // Gửi yêu cầu POST đến server
+      const response = await axios.post(
+        "http://localhost:3001/api/createConversation",
+        {
+          participants: [user._id, idValue], // Truyền id của user đó xuống server
+        }
+      );
+      setIdCoversation(response.data.conversationId);
+      const a = response.data.conversationId;
+      console.log("id conver =>", a);
+      console.log("id conver =>", IdCoversation);
+      const responseMess = await axios.post(
+        "http://localhost:3001/api/getMessages",
+        {
+          conversationId: IdCoversation, // Truyền id của user đó xuống server
+        }
+      );
+      setTinNhan(responseMess.data);
+      console.log("check tin nhắn =>", responseMess);
+      // Nếu yêu cầu thành công, in ra thông báo "Tạo cuộc trò chuyện thành công"
+      console.log("Tạo cuộc trò chuyện thành công");
+
+      // Nếu bạn cần xử lý dữ liệu trả về từ server, bạn có thể làm ở đây
+      // Ví dụ: const data = response.data;
+    } catch (error) {
+      // Nếu có lỗi xảy ra, in ra thông báo lỗi
+      console.error("Lỗi khi tạo cuộc trò chuyện:", error);
+    }
+  };
+
   // Lấy giá trị của thuộc tính không rõ tên
-  const idValue = Object.values(id)[0];
-  console.log("Value of id = >", idValue);
-
+  console.log(TinNhan);
   return (
     // <div>
     //   <h3>All User</h3>
@@ -159,16 +228,18 @@ const Chat = () => {
               (user, index) =>
                 user &&
                 user._id !== idValue && (
-                  <div key={index} className="container-chat_Doatchat-TinNhan">
+                  <div
+                    key={index}
+                    className="container-chat_Doatchat-TinNhan"
+                    onClick={() => handleUserIb(user)}
+                  >
                     <div className="container-chat_Doatchat-TinNhan">
                       <img
                         className="Doatchat-TinNhan-Avt"
                         src={require("../public/image/avt.jpg")}
                       />
                       <div className="Doatchat-TinNhan-name">
-                        <p className="name">
-                          {user.username} {user._id}
-                        </p>
+                        <p className="name">{user.username}</p>
                         <div className="MessAndTime">
                           <p className="mess">Phúc ơiiiii </p>{" "}
                           <span className="time">4 phút</span>
@@ -189,7 +260,9 @@ const Chat = () => {
                     src={require("../public/image/avt.jpg")}
                   />
                   <div className="NoiDungChat-Navbar-1-TinNhan-name">
-                    <p className="NoiDungChat-Navbar-1name">Hoàng Phúc</p>
+                    <p className="NoiDungChat-Navbar-1name">
+                      {NguoiMaBanMuonNhanTin}
+                    </p>
                     <div className="NoiDungChat-Navbar-1MessAndTime">
                       {" "}
                       <span className="NoiDungChat-Navbar-1time">
@@ -212,10 +285,24 @@ const Chat = () => {
                 </div>
               </div>
             </div>
-
+            {/* Tin nhắn được render ở đây */}
             <div className="NoiDungChat-Body">
-              {/* Render tin nhắn */}
-              <div className="NoiDungChat-Body-NoiDungChat"></div>
+              <div className="NoiDungChat-Body">
+                <div
+                  className="NoiDungChat-Body-NoiDungChat"
+                  id="messageContainer"
+                >
+                  {/* Lặp qua mảng messages và render mỗi tin nhắn */}
+                  {TinNhan.map((message) => (
+                    <div key={message._id} className="message">
+                      <p>
+                        <strong>{message.name}:</strong> {message.message}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               {/* Nơi nhập tin nhắn */}
               <div className="NoiDungChat-thanhChat">
                 <div className="NoiDungChat-thanhChat-1  margin-left-20px">
@@ -237,6 +324,7 @@ const Chat = () => {
                     type="text"
                     value={inputMess}
                     onChange={(e) => setinputMess(e.target.value)}
+                    onKeyPress={(event) => handlePressEnter(event)}
                   ></input>
                 </div>
                 <div className="NoiDungChat-thanhChat-3">
