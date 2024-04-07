@@ -40,12 +40,34 @@ const Chat = () => {
   }, []);
   const [ImageOfMe, setImageOfMe] = useState();
   console.log("imageofme=>", ImageOfMe);
+
+  useEffect(() => {
+    const fetchListUser = async () => {
+      try {
+        const response = await axios.get(`${ENDPOINT}/allusers`);
+        // Lọc dữ liệu để chỉ lấy user có _id trùng với idValue
+        const filteredUsers = response.data.filter(
+          (user) => user._id === idValue
+        );
+        // Lưu danh sách người dùng đã lọc vào state
+        setListUser(filteredUsers);
+        // Nếu có user trong danh sách đã lọc, thì lấy ảnh của user đầu tiên và lưu vào state
+        if (filteredUsers.length > 0) {
+          setImageOfMe(filteredUsers[0].avt);
+        }
+      } catch (error) {
+        console.error("Error fetching list of users:", error);
+      }
+    };
+
+    fetchListUser(); // Gọi hàm lấy danh sách người dùng khi component được tạo
+  }, [idValue]); // Thêm idValue vào dependency array để useEffect được gọi lại khi idValue thay đổi
+
   useEffect(() => {
     const fetchListUser = async () => {
       try {
         const response = await axios.get(`${ENDPOINT}/allusers`);
         setListUser(response.data);
-        setImageOfMe(response.data[0].avt);
       } catch (error) {
         console.error("Error fetching list of users:", error);
       }
@@ -298,10 +320,10 @@ const Chat = () => {
                       />
                       <div className="Doatchat-TinNhan-name">
                         <p className="name">{user.username}</p>
-                        <div className="MessAndTime">
+                        {/* <div className="MessAndTime">
                           <p className="mess">Phúc ơiiiii </p>{" "}
                           <span className="time">4 phút</span>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -323,9 +345,9 @@ const Chat = () => {
                     </p>
                     <div className="NoiDungChat-Navbar-1MessAndTime">
                       {" "}
-                      <span className="NoiDungChat-Navbar-1time">
+                      {/* <span className="NoiDungChat-Navbar-1time">
                         Hoạt động 4 phút trước
-                      </span>
+                      </span> */}
                     </div>
                   </div>
                 </div>
