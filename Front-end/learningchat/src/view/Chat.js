@@ -3,11 +3,12 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Chat.css";
-
+import { useNavigate } from "react-router-dom";
 import { set } from "mongoose";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
+  const navigate = useNavigate();
   const [inputMess, setinputMess] = useState("");
   const [inputUser, setinputUser] = useState("");
   const [listUser, setListUser] = useState([]);
@@ -24,6 +25,7 @@ const Chat = () => {
   const handleShowMenuAvatar = () => {
     setShowMenuAvatar(!ShowMenuAvatar);
   };
+
   useEffect(() => {
     // Thiết lập kết nối với server socket
     const socket = io(ENDPOINT);
@@ -173,9 +175,6 @@ const Chat = () => {
 
   console.log("hi", ImageUserWantMess);
   const handleUserIb = async (user) => {
-    setNguoiMaBanMuonNhanTin(Object.values(user)[2]);
-
-    setImageUserWantMess(Object.values(user)[7]);
     try {
       // Gửi yêu cầu POST đến server
       const response = await axios.post(
@@ -198,7 +197,9 @@ const Chat = () => {
       console.log("check tin nhắn =>", responseMess);
       // Nếu yêu cầu thành công, in ra thông báo "Tạo cuộc trò chuyện thành công"
       console.log("Tạo cuộc trò chuyện thành công");
+      setNguoiMaBanMuonNhanTin(Object.values(user)[2]);
 
+      setImageUserWantMess(Object.values(user)[7]);
       // Nếu bạn cần xử lý dữ liệu trả về từ server, bạn có thể làm ở đây
       // Ví dụ: const data = response.data;
     } catch (error) {
@@ -255,6 +256,9 @@ const Chat = () => {
       console.error("Error uploading file:", error);
       alert("Failed to upload file.");
     }
+  };
+  const handleLogout = () => {
+    navigate("/");
   };
   console.log("nguoima ban muon nhan tin =>", NguoiMaBanMuonNhanTin);
   return (
@@ -501,7 +505,7 @@ const Chat = () => {
             </div>
           </div>
 
-          <div className="InfoUserChat">
+          <div className="InfoUserChat ">
             {ShowMenuAvatar ? (
               <div className="InfoUserChat-ShowMenu">
                 <div className="InfoUserChat-ShowMenu-Con">
@@ -526,6 +530,45 @@ const Chat = () => {
                       </p>
                     </div>
                   </div>
+                </div>
+                <div className="container-Chucnang">
+                  <div className="container-Chucnang-1">
+                    <i class="fa-solid fa-gear"></i>
+                  </div>
+                  <p className="container-Chucnang-1-Text">
+                    Cài đặt & quyền riêng tư
+                  </p>
+                  <i class="fa-solid fa-chevron-right container-Chucnang-1-Text-icon "></i>
+                </div>
+                <div className="container-Chucnang">
+                  <div className="container-Chucnang-1">
+                    <i class="fa-solid fa-circle-question"></i>
+                  </div>
+                  <p className="container-Chucnang-1-Text">Trợ giúp & Hỗ trợ</p>
+                  <i class="fa-solid fa-chevron-right container-Chucnang-1-Text-icon "></i>
+                </div>
+                <div className="container-Chucnang">
+                  <div className="container-Chucnang-1">
+                    <i class="fa-solid fa-moon"></i>
+                  </div>
+                  <p className="container-Chucnang-1-Text">
+                    Màn hình & Trợ năng
+                  </p>
+                  <i class="fa-solid fa-chevron-right container-Chucnang-1-Text-icon "></i>
+                </div>
+                <div className="container-Chucnang ">
+                  <div className="container-Chucnang-1">
+                    <i class="fa-solid fa-inbox"></i>
+                  </div>
+                  <p className="container-Chucnang-1-Text">Đóng góp ý kiến</p>
+                  <i class="fa-solid fa-chevron-right container-Chucnang-1-Text-icon "></i>
+                </div>
+                <div className="container-Chucnang " onClick={handleLogout}>
+                  <div className="container-Chucnang-1">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                  </div>
+                  <p className="container-Chucnang-1-Text">Đăng xuất</p>
+                  <i class="fa-solid fa-chevron-right container-Chucnang-1-Text-icon "></i>
                 </div>
               </div>
             ) : (

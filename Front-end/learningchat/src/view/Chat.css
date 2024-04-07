@@ -850,3 +850,63 @@ align-items: center;
 font-size: 15px;
 margin-left: 10px;  color: white;
 }
+.container-Chucnang{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+   margin-top: 6px;
+    height: 43px;
+   border-radius: 9px;
+   color: white;
+  
+}
+.container-Chucnang:hover{
+    background-color: #3a3b3c;
+    cursor: pointer;
+}
+
+.container-Chucnang-1{
+    width: 40px;
+    height:40px;
+    border-radius: 50%;
+    background-color: #3a3b3c;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   margin-left: -10px;
+    margin-right: 10px;
+    
+}
+.container-Chucnang-1-Text{
+    font-size: 15px;
+    width: 72%;
+}
+.fa-gear{
+    font-size: 20px;
+    position: absolute;
+}
+.container-Chucnang-1-Text-icon{
+   font-size: 20px;
+   color: #a0a2a5;
+   width: 5%;
+   
+  
+}
+.fa-inbox{
+    font-size: 20px;
+    position: absolute;
+}
+.fa-moon{
+    font-size: 20px;
+    position: absolute;
+}
+.fa-circle-question{
+    font-size: 20px;
+    position: absolute;
+}
+.fa-right-from-bracket{
+    font-size: 20px;
+    position: absolute;
+}
