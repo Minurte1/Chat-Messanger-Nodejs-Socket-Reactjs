@@ -3,8 +3,8 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Chat.css";
-import { set } from "mongoose";
 
+import { set } from "mongoose";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
@@ -75,7 +75,43 @@ const Chat = () => {
 
     fetchListUser(); // Gọi hàm lấy danh sách người dùng khi component được tạo
   }, []);
+  const handleIconCaVoi = async () => {
+    try {
+      // Gửi yêu cầu POST đến server
+      const response = await axios.post(
+        "http://localhost:3001/api/addMessageToConversation",
+        {
+          senderUserId: idValue, // ID của người gửi tin nhắn
+          content: "🐳", // Nội dung của tin nhắn
+          conversationId: IdCoversation, // ID của cuộc trò chuyện
+        }
+      );
+      console.log("id", idValue, "mess", inputMess, "coverid=>", IdCoversation);
+      console.log("backend gui len ne =>", response.data.messageNe.message);
+
+      // Nếu yêu cầu thành công, in ra thông báo "Gửi tin nhắn thành công"
+      console.log("Gửi tin nhắn thành công");
+
+      setinputMess("");
+      const responseMess = await axios.post(
+        "http://localhost:3001/api/getMessages",
+        {
+          conversationId: IdCoversation, // Truyền id của user đó xuống server
+        }
+      );
+      setTinNhan(responseMess.data);
+
+      // Nếu bạn cần xử lý dữ liệu trả về từ server, bạn có thể làm ở đây
+      // Ví dụ: const data = response.data;
+    } catch (error) {
+      // Nếu có lỗi xảy ra, in ra thông báo lỗi
+      console.error("Lỗi khi gửi tin nhắn:", error);
+    }
+  };
   const SendMessNe = async () => {
+    if (!inputMess) {
+      return;
+    }
     try {
       // Gửi yêu cầu POST đến server
       const response = await axios.post(
@@ -127,7 +163,9 @@ const Chat = () => {
       event.preventDefault();
     }
   };
+
   const [ImageUserWantMess, setImageUserWantMess] = useState();
+
   console.log("hi", ImageUserWantMess);
   const handleUserIb = async (user) => {
     setNguoiMaBanMuonNhanTin(Object.values(user)[2]);
@@ -183,7 +221,7 @@ const Chat = () => {
   // .................CẬP NHẬT AVATAR..............................
   const [selectedFile, setSelectedFile] = useState(null);
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
@@ -207,6 +245,7 @@ const Chat = () => {
       );
 
       alert("File uploaded successfully!");
+      window.location.reload();
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Failed to upload file.");
@@ -442,6 +481,7 @@ const Chat = () => {
                 </div>
                 <div className="NoiDungChat-thanhChat-3">
                   <img
+                    onClick={handleIconCaVoi}
                     className="CavoiCute"
                     alt="🐳"
                     src="https://static.xx.fbcdn.net/images/emoji.php/v9/tde/1.5/20/1f433.png"
@@ -452,9 +492,60 @@ const Chat = () => {
           </div>
 
           <div className="InfoUserChat">
-            <div>
-              <input type="file" onChange={handleFileChange} />
-              <button onClick={handleUpload}>Upload Avatar</button>
+            <div className="InfoUserChat-container-img">
+              <img
+                className="container-img-avata"
+                src={`http://localhost:3001/public/uploads/${ImageOfMe}`}
+              />
+            </div>
+            <div className="InfoUserChat-container-name">
+              {" "}
+              <p className="InfoUserChat-name">Hoàng Phúc</p>
+            </div>
+            <div className="InfoUserChat-container-trangthai-Cha">
+              <div className="InfoUserChat-container-trangthai">
+                <p className="InfoUserChat-trangthai">
+                  <i class="fa-solid fa-lock"></i>Được mã hóa đầu cuối
+                </p>
+              </div>
+            </div>
+            <div className="InfoUserChat-container-icon-Cha">
+              <div className="InfoUserChat-icon-Cha">
+                <div className="InfoUserChat-icon">
+                  <i class="fa-solid fa-circle-user"></i>
+                </div>
+                <p className="InfoUserChat-textTrangcanhan">Trang cá nhâ...</p>
+              </div>
+              <div className="InfoUserChat-icon-Cha">
+                <div className="InfoUserChat-icon">
+                  <i class="fa-solid fa-bell caichuong "></i>
+                </div>
+                <p className="InfoUserChat-textTrangcanhan">Tắt thông báo</p>
+              </div>
+              <div className="InfoUserChat-icon-Cha">
+                <div className="InfoUserChat-icon">
+                  <input
+                    type="file"
+                    style={{ display: "none" }}
+                    id="fileInput"
+                    onChange={handleFileChange}
+                  />
+                  <label htmlFor="fileInput">
+                    <i className="fa-solid fa-camera "></i>
+                  </label>
+                </div>
+                <p className="InfoUserChat-textTrangcanhan">Đổi Avatar</p>
+              </div>
+            </div>
+
+            {/* <input type="file" onChange={handleFileChange} /> <label> </label> */}
+            <div className="container-Xacnhanuploadhinh">
+              <button
+                className="Xacnhanuploadhinh classhover"
+                onClick={handleUpload}
+              >
+                Upload Avatar
+              </button>
             </div>
           </div>
         </div>

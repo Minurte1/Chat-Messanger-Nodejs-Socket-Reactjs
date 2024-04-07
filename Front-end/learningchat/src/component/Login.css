@@ -3,7 +3,7 @@
     padding: 0px;
 }
 .margin2px{
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }
 .wrap {
     width: 100%;
@@ -35,7 +35,9 @@
     margin-left: -38%;
     margin-right: 5%;
 }
-
+.form-1{
+    margin-top: 1%;
+}
 .form {
 
     width: 38%;

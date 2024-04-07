@@ -114,7 +114,7 @@ const LoginForm = () => {
         </div>
         <div className="form">
           <div className="form-login">
-            <form>
+            <form className="form-1">
               <input
                 type="text"
                 placeholder="Email address or phone number"

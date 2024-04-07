@@ -98,13 +98,15 @@ const RegisterForm = () => {
           password
         );
         console.log("check responve =>> ", serverData.data.EM);
-        if (+serverData.data.EC == 0) {
-          toast.success(serverData.data.EM);
-          navigate("/login");
-        } else {
-          toast.error(serverData.data.EM);
-          return false;
-        }
+        navigate("/");
+        toast.success("Đã tạo thành công tài khoản !!");
+        // if (+serverData.data.EC == 0) {
+        //   toast.success(serverData.data.EM);
+
+        // } else {
+        //   toast.error(serverData.data.EM);
+        //   return false;
+        // }
       } catch (error) {
         console.log("OoO Lỗi rồi =>", error);
       }
@@ -194,7 +196,7 @@ const RegisterForm = () => {
               </button>
               <a href="">Forgotten password?</a>
               <div className="thanhnang"></div>
-              <button className="btn btn-success">he</button>
+
               <button type="submit" onClick={LoginUser} className="button1">
                 Chuyển Sang Login
               </button>
