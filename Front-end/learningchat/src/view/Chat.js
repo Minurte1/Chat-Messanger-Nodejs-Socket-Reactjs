@@ -4,6 +4,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./Chat.css";
 import { set } from "mongoose";
+
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
@@ -17,7 +18,7 @@ const Chat = () => {
   const id = useParams();
 
   const idValue = Object.values(id)[0];
-
+  console.log("id nguoi set vata", idValue);
   const [TinNhan, setTinNhan] = useState([]);
 
   useEffect(() => {
@@ -37,11 +38,14 @@ const Chat = () => {
       socket.disconnect();
     };
   }, []);
+  const [ImageOfMe, setImageOfMe] = useState();
+  console.log("imageofme=>", ImageOfMe);
   useEffect(() => {
     const fetchListUser = async () => {
       try {
         const response = await axios.get(`${ENDPOINT}/allusers`);
         setListUser(response.data);
+        setImageOfMe(response.data[0].avt);
       } catch (error) {
         console.error("Error fetching list of users:", error);
       }
@@ -101,9 +105,12 @@ const Chat = () => {
       event.preventDefault();
     }
   };
+  const [ImageUserWantMess, setImageUserWantMess] = useState();
+  console.log("hi", ImageUserWantMess);
   const handleUserIb = async (user) => {
     setNguoiMaBanMuonNhanTin(Object.values(user)[2]);
 
+    setImageUserWantMess(Object.values(user)[7]);
     try {
       // Gửi yêu cầu POST đến server
       const response = await axios.post(
@@ -150,6 +157,40 @@ const Chat = () => {
     // Scroll to bottom when TinNhan changes
     scrollToBottom();
   }, [TinNhan]); // Run when TinNhan changes
+
+  // .................CẬP NHẬT AVATAR..............................
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleUpload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      console.log("formdata =>", formData, "nguoisetabat", idValue);
+      console.log("check avta =>", selectedFile);
+      formData.append("idValue", idValue);
+      await axios.post(
+        "http://localhost:3001/upload",
+        formData,
+        idValue,
+        selectedFile,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      alert("File uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Failed to upload file.");
+    }
+  };
+  console.log("nguoima ban muon nhan tin =>", NguoiMaBanMuonNhanTin);
   return (
     // <div>
     //   <h3>All User</h3>
@@ -206,7 +247,10 @@ const Chat = () => {
           </div>
           <div className="container-chat_Navbar-3">
             <i class="fa-solid fa-bell"></i>
-            <img className="logoavt" src={require("../public/image/avt.jpg")} />
+            <img
+              className="logoavt"
+              src={`http://localhost:3001/public/uploads/${ImageOfMe}`}
+            />
           </div>
         </div>
         <div className="container-bodyChat">
@@ -249,7 +293,8 @@ const Chat = () => {
                     <div className="container-chat_Doatchat-TinNhan">
                       <img
                         className="Doatchat-TinNhan-Avt"
-                        src={require("../public/image/avt.jpg")}
+                        src={`http://localhost:3001/public/uploads/${user.avt}`}
+                        alt="User Avatar"
                       />
                       <div className="Doatchat-TinNhan-name">
                         <p className="name">{user.username}</p>
@@ -270,7 +315,7 @@ const Chat = () => {
                 <div className="NoiDungChat-Navbar-1-TinNhan">
                   <img
                     className="NoiDungChat-Navbar-1-TinNhan-Avt"
-                    src={require("../public/image/avt.jpg")}
+                    src={`http://localhost:3001/public/uploads/${ImageUserWantMess}`}
                   />
                   <div className="NoiDungChat-Navbar-1-TinNhan-name">
                     <p className="NoiDungChat-Navbar-1name">
@@ -332,7 +377,7 @@ const Chat = () => {
                                 ? "image-Avta"
                                 : "display-none"
                             }`}
-                            src={require("../public/image/avt.jpg")}
+                            src={`http://localhost:3001/public/uploads/${ImageUserWantMess}`}
                           />
 
                           {message.name === NguoiMaBanMuonNhanTin && (
@@ -384,7 +429,12 @@ const Chat = () => {
             </div>
           </div>
 
-          <div className="InfoUserChat"></div>
+          <div className="InfoUserChat">
+            <div>
+              <input type="file" onChange={handleFileChange} />
+              <button onClick={handleUpload}>Upload Avatar</button>
+            </div>
+          </div>
         </div>
       </div>
     </>

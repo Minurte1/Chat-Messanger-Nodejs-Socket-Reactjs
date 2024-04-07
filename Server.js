@@ -1,6 +1,9 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 var app = express();
+const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
 
 var http = require("http").Server(app);
 var io = require("socket.io")(http, {
@@ -9,6 +12,15 @@ var io = require("socket.io")(http, {
     methods: ["GET", "POST"],
   },
 });
+
+// Đảm bảo thư mục public/images tồn tại
+const uploadDir = path.join(__dirname, "public", "images");
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Endpoint để upload ảnh avatar
+
 var mongoose = require("mongoose");
 const cors = require("cors");
 app.use(express.static(__dirname));
@@ -41,6 +53,7 @@ const userSchema = new mongoose.Schema({
   username: String,
   password: String,
   phone: String,
+  avt: String,
 
   conversations: [
     { type: mongoose.Schema.Types.ObjectId, ref: "Conversation" },
@@ -276,6 +289,57 @@ app.get("/messages", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
+  }
+});
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "public/uploads/"); // Đường dẫn thư mục lưu trữ file
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + ".png"); // Tên file mới với phần mở rộng là .png
+  },
+});
+const upload = multer({ storage: storage });
+app.post("/upload", upload.single("file"), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ msg: "No file uploaded" });
+  }
+
+  // Lấy userId từ req.body
+  const userId = req.body.idValue;
+  const avatarFileName = req.file.filename; // Lấy filename của file từ req.file
+  console.log("id=>", userId, "avta =>", avatarFileName);
+
+  // Kiểm tra xem userId và avatarFileName đã được định nghĩa chưa
+  if (!userId || !avatarFileName) {
+    return res
+      .status(400)
+      .json({ message: "Invalid userId or avatarFileName" });
+  }
+
+  try {
+    // Tìm và cập nhật người dùng với avatar mới
+    const user = await User.findOneAndUpdate(
+      { _id: userId },
+      { $set: { avt: avatarFileName } },
+      { new: true, upsert: true }
+    );
+
+    // Kiểm tra xem user có tồn tại hay không
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Trả về thông tin về file đã upload
+    res.json({
+      fileName: req.file.filename,
+      filePath: `/uploads/${req.file.filename}`,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 });
 

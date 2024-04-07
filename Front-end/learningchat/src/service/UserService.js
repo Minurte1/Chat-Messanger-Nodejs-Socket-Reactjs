@@ -19,8 +19,5 @@ const ListConversations = (idUser) => {
     userId: idUser,
   });
 };
-const GetListAllUser = () => {
-  return axios.get("http://localhost:3001/allusers");
-};
 
-export { registerNewUser, LoginUser, ListConversations, GetListAllUser };
+export { registerNewUser, LoginUser, ListConversations };

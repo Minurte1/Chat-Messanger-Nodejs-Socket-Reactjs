@@ -511,6 +511,7 @@ cursor: pointer;
 
 
 .NoiDungChat-Body-NoiDungChat {
+    
     overflow-y: scroll; /* Cho phép cuộn dọc */
     /* Đặt chiều cao tối đa để hiển thị số lượng tin nhắn hợp lý */
   }
@@ -518,6 +519,7 @@ cursor: pointer;
   /* Hiệu ứng cuộn lên */
   .NoiDungChat-Body-NoiDungChat::-webkit-scrollbar {
     width: 12px;
+
   }
   
   .NoiDungChat-Body-NoiDungChat::-webkit-scrollbar-thumb {
@@ -526,7 +528,7 @@ cursor: pointer;
   }
   
   .NoiDungChat-Body-NoiDungChat::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
+    background-color: #2c2c2c;
   }
   
   .container-chat_Doatchat-TinNhan:hover{
