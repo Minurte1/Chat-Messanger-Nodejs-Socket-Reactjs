@@ -20,7 +20,10 @@ const Chat = () => {
   const idValue = Object.values(id)[0];
   console.log("id nguoi set vata", idValue);
   const [TinNhan, setTinNhan] = useState([]);
-
+  const [ShowMenuAvatar, setShowMenuAvatar] = useState(false);
+  const handleShowMenuAvatar = () => {
+    setShowMenuAvatar(!ShowMenuAvatar);
+  };
   useEffect(() => {
     // Thiết lập kết nối với server socket
     const socket = io(ENDPOINT);
@@ -39,6 +42,7 @@ const Chat = () => {
     };
   }, []);
   const [ImageOfMe, setImageOfMe] = useState();
+  const [NameOfMe, setNameOfMe] = useState();
   console.log("imageofme=>", ImageOfMe);
 
   useEffect(() => {
@@ -54,6 +58,7 @@ const Chat = () => {
         // Nếu có user trong danh sách đã lọc, thì lấy ảnh của user đầu tiên và lưu vào state
         if (filteredUsers.length > 0) {
           setImageOfMe(filteredUsers[0].avt);
+          setNameOfMe(filteredUsers[0].username);
         }
       } catch (error) {
         console.error("Error fetching list of users:", error);
@@ -308,10 +313,15 @@ const Chat = () => {
           </div>
           <div className="container-chat_Navbar-3">
             <i class="fa-solid fa-bell"></i>
-            <img
-              className="logoavt"
-              src={`http://localhost:3001/public/uploads/${ImageOfMe}`}
-            />
+            <div className="container-chat_Navbar-3-avatar">
+              {" "}
+              <img
+                onClick={handleShowMenuAvatar}
+                className="logoavt"
+                src={`http://localhost:3001/public/uploads/${ImageOfMe}`}
+              />{" "}
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
           </div>
         </div>
         <div className="container-bodyChat">
@@ -492,61 +502,94 @@ const Chat = () => {
           </div>
 
           <div className="InfoUserChat">
-            <div className="InfoUserChat-container-img">
-              <img
-                className="container-img-avata"
-                src={`http://localhost:3001/public/uploads/${ImageOfMe}`}
-              />
-            </div>
-            <div className="InfoUserChat-container-name">
-              {" "}
-              <p className="InfoUserChat-name">Hoàng Phúc</p>
-            </div>
-            <div className="InfoUserChat-container-trangthai-Cha">
-              <div className="InfoUserChat-container-trangthai">
-                <p className="InfoUserChat-trangthai">
-                  <i class="fa-solid fa-lock"></i>Được mã hóa đầu cuối
-                </p>
-              </div>
-            </div>
-            <div className="InfoUserChat-container-icon-Cha">
-              <div className="InfoUserChat-icon-Cha">
-                <div className="InfoUserChat-icon">
-                  <i class="fa-solid fa-circle-user"></i>
+            {ShowMenuAvatar ? (
+              <div className="InfoUserChat-ShowMenu">
+                <div className="InfoUserChat-ShowMenu-Con">
+                  <div className="InfoUserChat-ShowMenu-Con-Avatar">
+                    <img
+                      className="InfoUserChat-ShowMenu-Con-Avatar-Img"
+                      src={`http://localhost:3001/public/uploads/${ImageOfMe}`}
+                    />
+                    <p className="InfoUserChat-ShowMenu-Con-Avatar-name">
+                      {NameOfMe}
+                    </p>
+                  </div>
+                  <div className="gachngangCha">
+                    <div className="gachngang"></div>
+                  </div>
+                  <div className="InfoUserChat-ShowMenu-Con-container-ShowAllUser">
+                    <div className="InfoUserChat-ShowMenu-Con-container-ShowAllUser-Con">
+                      {" "}
+                      <i class="fa-solid fa-user-gear"></i>
+                      <p className="InfoUserChat-ShowMenu-Con-container-ShowAllUser-text">
+                        Xem tất cả trang cá nhân
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <p className="InfoUserChat-textTrangcanhan">Trang cá nhâ...</p>
               </div>
-              <div className="InfoUserChat-icon-Cha">
-                <div className="InfoUserChat-icon">
-                  <i class="fa-solid fa-bell caichuong "></i>
-                </div>
-                <p className="InfoUserChat-textTrangcanhan">Tắt thông báo</p>
-              </div>
-              <div className="InfoUserChat-icon-Cha">
-                <div className="InfoUserChat-icon">
-                  <input
-                    type="file"
-                    style={{ display: "none" }}
-                    id="fileInput"
-                    onChange={handleFileChange}
+            ) : (
+              <div>
+                {/* Nội dung của div khi ShowMenuAvatar là false */}
+                <div className="InfoUserChat-container-img">
+                  <img
+                    className="container-img-avata"
+                    src={`http://localhost:3001/public/uploads/${ImageOfMe}`}
                   />
-                  <label htmlFor="fileInput">
-                    <i className="fa-solid fa-camera "></i>
-                  </label>
                 </div>
-                <p className="InfoUserChat-textTrangcanhan">Đổi Avatar</p>
+                <div className="InfoUserChat-container-name">
+                  {" "}
+                  <p className="InfoUserChat-name">{NameOfMe}</p>
+                </div>
+                <div className="InfoUserChat-container-trangthai-Cha">
+                  <div className="InfoUserChat-container-trangthai">
+                    <p className="InfoUserChat-trangthai">
+                      <i class="fa-solid fa-lock"></i>Được mã hóa đầu cuối
+                    </p>
+                  </div>
+                </div>
+                <div className="InfoUserChat-container-icon-Cha">
+                  <div className="InfoUserChat-icon-Cha">
+                    <div className="InfoUserChat-icon">
+                      <i class="fa-solid fa-circle-user"></i>
+                    </div>
+                    <p className="InfoUserChat-textTrangcanhan">
+                      Trang cá nhâ...
+                    </p>
+                  </div>
+                  <div className="InfoUserChat-icon-Cha">
+                    <div className="InfoUserChat-icon">
+                      <i class="fa-solid fa-bell caichuong "></i>
+                    </div>
+                    <p className="InfoUserChat-textTrangcanhan">
+                      Tắt thông báo
+                    </p>
+                  </div>
+                  <div className="InfoUserChat-icon-Cha">
+                    <div className="InfoUserChat-icon">
+                      <input
+                        type="file"
+                        style={{ display: "none" }}
+                        id="fileInput"
+                        onChange={handleFileChange}
+                      />
+                      <label htmlFor="fileInput">
+                        <i className="fa-solid fa-camera "></i>
+                      </label>
+                    </div>
+                    <p className="InfoUserChat-textTrangcanhan">Đổi Avatar</p>
+                  </div>
+                </div>
+                <div className="container-Xacnhanuploadhinh">
+                  <button
+                    className="Xacnhanuploadhinh classhover"
+                    onClick={handleUpload}
+                  >
+                    Upload Avatar
+                  </button>
+                </div>
               </div>
-            </div>
-
-            {/* <input type="file" onChange={handleFileChange} /> <label> </label> */}
-            <div className="container-Xacnhanuploadhinh">
-              <button
-                className="Xacnhanuploadhinh classhover"
-                onClick={handleUpload}
-              >
-                Upload Avatar
-              </button>
-            </div>
+            )}
           </div>
         </div>
       </div>
