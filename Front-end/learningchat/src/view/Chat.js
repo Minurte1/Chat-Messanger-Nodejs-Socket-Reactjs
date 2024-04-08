@@ -570,6 +570,36 @@ const Chat = () => {
                   <p className="container-Chucnang-1-Text">Đăng xuất</p>
                   <i class="fa-solid fa-chevron-right container-Chucnang-1-Text-icon "></i>
                 </div>
+                <div className="container-Chucnang-Foolter">
+                  <span className="container-Chucnang-Foolter-text">
+                    Quyền riêng tư
+                  </span>{" "}
+                  <span className="cham">.</span>
+                  <span className="container-Chucnang-Foolter-text">
+                    Điều khoản
+                  </span>
+                  <span className="cham">.</span>
+                  <span className="container-Chucnang-Foolter-text">
+                    Quảng cáo
+                  </span>
+                  <span className="cham">.</span>
+                  <span className="container-Chucnang-Foolter-text">
+                    Lựa chọn quảng cáo
+                  </span>
+                  <span className="cham">.</span>
+                  <span className="container-Chucnang-Foolter-text">
+                    Cookie
+                  </span>
+                  <span className="cham">.</span>
+                  <span className="container-Chucnang-Foolter-text">
+                    Xem thêm
+                  </span>
+                  <span className="cham">.</span>
+                  <span className="container-Chucnang-Foolter-text">
+                    Meta © 2024
+                  </span>
+                  <span className="cham">.</span>
+                </div>
               </div>
             ) : (
               <div>

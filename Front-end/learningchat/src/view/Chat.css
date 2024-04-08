@@ -777,7 +777,7 @@ font-weight: 530;
 }
 .InfoUserChat-ShowMenu{
     width: 95%;
-    height: 70%;
+    height: 68%;
     background-color: #242526;
     margin-left: 5px;
     border-radius: 15px;
@@ -909,4 +909,22 @@ margin-left: 10px;  color: white;
 .fa-right-from-bracket{
     font-size: 20px;
     position: absolute;
+}
+.container-Chucnang-Foolter-text{
+    color: #b0b3b8;
+    font-size: 12px;
+}
+.container-Chucnang-Foolter-text:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+.cham{
+    color:#b0b3b8; margin-right: 2px;
+}
+.container-Chucnang-Foolter{
+    width: 95%;
+    height:auto;
+    margin-left: 4%;
+    margin-top: 3%;
+    font-weight: 400;
 }
