@@ -41,6 +41,7 @@ const LoginForm = () => {
         token: "fake token",
       };
       let response = await LoginUser(valueLogin, password);
+
       console.log(response.data.message);
       if (response && response.data.EC === 0) {
         sessionStorage.setItem("account", JSON.stringify(data));

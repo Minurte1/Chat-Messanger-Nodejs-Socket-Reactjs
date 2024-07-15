@@ -60,11 +60,6 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-const messageSchema = new mongoose.Schema({
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  content: String,
-});
-
 const User = mongoose.model("User", userSchema);
 var Message = mongoose.model("Message", {
   name: String,
@@ -134,7 +129,7 @@ app.post("/login", async (req, res) => {
     console.log("email =>", req.body);
     const email = req.body.valueLogin;
     const password = req.body.password;
-    // Tìm kiếm người dùng trong cơ sở dữ liệu dựa trên email`
+    // Tìm kiếm người dùng trong cơ sở dữ liệu dựa trên email
     const user = await User.findOne({ email, password });
 
     // Kiểm tra xem người dùng có tồn tại không
@@ -155,7 +150,7 @@ app.post("/login", async (req, res) => {
 
 // Tạo một user mới
 //Click vào để bắt đầu nhắn với 1nguoi mới
-// Tạo một conversation mới`
+// Tạo một conversation mới
 app.post("/api/createConversation", async (req, res) => {
   try {
     const { participants } = req.body;
@@ -302,6 +297,7 @@ const storage = multer.diskStorage({
   },
 });
 const upload = multer({ storage: storage });
+
 app.post("/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ msg: "No file uploaded" });

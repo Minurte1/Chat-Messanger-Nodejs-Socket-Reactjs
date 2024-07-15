@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const registerNewUser = (email, phone, username, password) => {
-  return axios.post("http://localhost:3001/api/createUser", {
+  return axios.post("http://localhost:3001/api/users/createUser", {
     email,
     phone,
     username,
@@ -9,13 +9,14 @@ const registerNewUser = (email, phone, username, password) => {
   });
 };
 const LoginUser = (valueLogin, password) => {
-  return axios.post("http://localhost:3001/login", {
-    valueLogin,
+  const email = valueLogin;
+  return axios.post("http://localhost:3001/api/users/login", {
+    email,
     password,
   });
 };
 const ListConversations = (idUser) => {
-  return axios.post("http://localhost:3001/api/conversations", {
+  return axios.post("http://localhost:3001/api/conversations/conversations", {
     userId: idUser,
   });
 };

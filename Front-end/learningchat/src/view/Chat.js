@@ -32,6 +32,7 @@ const Chat = () => {
 
     // Lắng nghe sự kiện "message" từ server
     socket.on("message", (data) => {
+      console.log("message SV +>", data);
       // Trích xuất tin nhắn từ dữ liệu nhận được
       const newMessage = data.messageNe;
       // Cập nhật state TinNhan bằng cách thêm tin nhắn mới vào mảng tin nhắn đã có
@@ -50,7 +51,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchListUser = async () => {
       try {
-        const response = await axios.get(`${ENDPOINT}/allusers`);
+        const response = await axios.get(`${ENDPOINT}/api/users/allusers`);
         // Lọc dữ liệu để chỉ lấy user có _id trùng với idValue
         const filteredUsers = response.data.filter(
           (user) => user._id === idValue
@@ -73,7 +74,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchListUser = async () => {
       try {
-        const response = await axios.get(`${ENDPOINT}/allusers`);
+        const response = await axios.get(`${ENDPOINT}/api/users/allusers`);
         setListUser(response.data);
       } catch (error) {
         console.error("Error fetching list of users:", error);
@@ -86,7 +87,7 @@ const Chat = () => {
     try {
       // Gửi yêu cầu POST đến server
       const response = await axios.post(
-        "http://localhost:3001/api/addMessageToConversation",
+        "http://localhost:3001/api/messages/addMessageToConversation",
         {
           senderUserId: idValue, // ID của người gửi tin nhắn
           content: "🐳", // Nội dung của tin nhắn
@@ -101,7 +102,7 @@ const Chat = () => {
 
       setinputMess("");
       const responseMess = await axios.post(
-        "http://localhost:3001/api/getMessages",
+        "http://localhost:3001/api/messages/getMessages",
         {
           conversationId: IdCoversation, // Truyền id của user đó xuống server
         }
@@ -122,22 +123,23 @@ const Chat = () => {
     try {
       // Gửi yêu cầu POST đến server
       const response = await axios.post(
-        "http://localhost:3001/api/addMessageToConversation",
+        "http://localhost:3001/api/messages/addMessageToConversation",
         {
           senderUserId: idValue, // ID của người gửi tin nhắn
           content: inputMess, // Nội dung của tin nhắn
           conversationId: IdCoversation, // ID của cuộc trò chuyện
         }
       );
+
       console.log("id", idValue, "mess", inputMess, "coverid=>", IdCoversation);
-      console.log("backend gui len ne =>", response.data.messageNe.message);
+      console.log("backend gui len ne =>", response.data);
 
       // Nếu yêu cầu thành công, in ra thông báo "Gửi tin nhắn thành công"
       console.log("Gửi tin nhắn thành công");
 
       setinputMess("");
       const responseMess = await axios.post(
-        "http://localhost:3001/api/getMessages",
+        "http://localhost:3001/api/messages/getMessages",
         {
           conversationId: IdCoversation, // Truyền id của user đó xuống server
         }
@@ -178,7 +180,7 @@ const Chat = () => {
     try {
       // Gửi yêu cầu POST đến server
       const response = await axios.post(
-        "http://localhost:3001/api/createConversation",
+        "http://localhost:3001/api/conversations/createConversation",
         {
           participants: [user._id, idValue], // Truyền id của user đó xuống server
         }
@@ -188,7 +190,7 @@ const Chat = () => {
       console.log("id conver =>", a);
       console.log("id conver =>", IdCoversation);
       const responseMess = await axios.post(
-        "http://localhost:3001/api/getMessages",
+        "http://localhost:3001/api/messages/getMessages",
         {
           conversationId: IdCoversation, // Truyền id của user đó xuống server
         }
@@ -239,7 +241,7 @@ const Chat = () => {
       console.log("check avta =>", selectedFile);
       formData.append("idValue", idValue);
       await axios.post(
-        "http://localhost:3001/upload",
+        "http://localhost:3001/api/upload/upload",
         formData,
         idValue,
         selectedFile,
