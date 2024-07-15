@@ -4,7 +4,7 @@ import "../component/Login.css"; // Import CSS file
 import LogoFb from "./image/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { LoginUser, ListConversations } from "../service/UserService";
+import { LoginUser, ListConversations } from "../services/UserService";
 
 const LoginForm = () => {
   const navigate = useNavigate();

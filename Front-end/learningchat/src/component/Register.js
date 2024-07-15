@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import "bootstrap/dist/js/bootstrap.bundle.min";
 // import "bootstrap/dist/css/bootstrap.min.css";
-import { registerNewUser } from "../service/UserService";
+import { registerNewUser } from "../services/UserService";
 const RegisterForm = () => {
   const navigate = useNavigate();
 
