@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -6,10 +6,12 @@ import "./Chat.css";
 import { useNavigate } from "react-router-dom";
 import { set } from "mongoose";
 import { toast } from "react-toastify";
+import { SocketContext } from "../Context";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
-
+const socket = io(ENDPOINT);
 const Chat = () => {
   const navigate = useNavigate();
+  const { handleCallFriend } = useContext(SocketContext);
   const [inputMess, setinputMess] = useState("");
   const [inputUser, setinputUser] = useState("");
   const [listUser, setListUser] = useState([]);
@@ -20,7 +22,8 @@ const Chat = () => {
   const id = useParams();
 
   const idValue = Object.values(id)[0];
-  console.log("id nguoi set vata", idValue);
+
+  // console.log("id of me", Object.values(id)[0]);
   const [TinNhan, setTinNhan] = useState([]);
   const [ShowMenuAvatar, setShowMenuAvatar] = useState(false);
   const handleShowMenuAvatar = () => {
@@ -29,8 +32,9 @@ const Chat = () => {
 
   useEffect(() => {
     // Thiết lập kết nối với server socket
-    const socket = io(ENDPOINT);
 
+    socket.emit("idUserdatabse", idValue);
+    console.log("check Iduser", idValue);
     // Lắng nghe sự kiện "message" từ server
     socket.on("message", (data) => {
       console.log("message SV +>", data);
@@ -261,9 +265,10 @@ const Chat = () => {
     }
   };
   const handleLogout = () => {
-    navigate("/");
+    socket.emit("disconnection", idValue); // Gửi sự kiện disconnection với ID của người dùng
+    navigate("/"); // Điều hướng về trang đăng nhập
   };
-  console.log("nguoima ban muon nhan tin =>", NguoiMaBanMuonNhanTin);
+  // console.log("nguoima ban muon nhan tin =>", NguoiMaBanMuonNhanTin);
   return (
     // <div>
     //   <h3>All User</h3>
@@ -411,7 +416,10 @@ const Chat = () => {
               <div className="NoiDungChat-Navbar-2"></div>
               <div className="NoiDungChat-Navbar-3">
                 <div className="NoiDungChat-Navbar-3-phone">
-                  <i class="fa-solid fa-phone"></i>
+                  <i
+                    class="fa-solid fa-phone"
+                    onClick={() => handleCallFriend()}
+                  ></i>
                 </div>
                 <div className="NoiDungChat-Navbar-3-phone margin10px">
                   <i class="fa-solid fa-video"></i>
