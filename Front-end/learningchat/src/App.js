@@ -37,7 +37,7 @@ function App() {
             />
           </Routes>
         </div>
-        <ToastContainer position="top-left" autoClose={3000} draggable />
+        <ToastContainer position="top-right" autoClose={2000} draggable />
       </Router>
     </>
   );

@@ -6,7 +6,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "public/uploads/");
+    cb(null, "src/public/uploads/");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -20,8 +20,11 @@ router.post("/upload", upload.single("file"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ msg: "No file uploaded" });
   }
+
   const userId = req.body.idValue;
   const avatarFileName = req.file.filename;
+  console.log(userId);
+  console.log(avatarFileName);
   if (!userId || !avatarFileName) {
     return res
       .status(400)
@@ -38,7 +41,7 @@ router.post("/upload", upload.single("file"), async (req, res) => {
     }
     res.json({
       fileName: req.file.filename,
-      filePath: `/uploads/${req.file.filename}`,
+      filePath: `/src/uploads/${req.file.filename}`,
     });
   } catch (error) {
     console.error(error);

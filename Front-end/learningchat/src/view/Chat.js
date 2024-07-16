@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import "./Chat.css";
 import { useNavigate } from "react-router-dom";
 import { set } from "mongoose";
+import { toast } from "react-toastify";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 
 const Chat = () => {
@@ -46,7 +47,7 @@ const Chat = () => {
   }, []);
   const [ImageOfMe, setImageOfMe] = useState();
   const [NameOfMe, setNameOfMe] = useState();
-  console.log("imageofme=>", ImageOfMe);
+  // console.log("imageofme=>", ImageOfMe);
 
   useEffect(() => {
     const fetchListUser = async () => {
@@ -237,10 +238,10 @@ const Chat = () => {
     try {
       const formData = new FormData();
       formData.append("file", selectedFile);
-      console.log("formdata =>", formData, "nguoisetabat", idValue);
-      console.log("check avta =>", selectedFile);
+      // console.log("formdata =>", formData, "nguoisetabat", idValue);
+      // console.log("check avta =>", selectedFile);
       formData.append("idValue", idValue);
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:3001/api/upload/upload",
         formData,
         idValue,
@@ -251,9 +252,9 @@ const Chat = () => {
           },
         }
       );
-
-      alert("File uploaded successfully!");
-      window.location.reload();
+      // console.log("response data => ", response.data);
+      toast.success("Thay đổi ảnh đại diện thành công");
+      setImageOfMe(response.data.fileName);
     } catch (error) {
       console.error("Error uploading file:", error);
       alert("Failed to upload file.");
