@@ -2,6 +2,7 @@ import { createContext, useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 const SocketContext = createContext();
 const socket = io("http://localhost:5000");
 
@@ -131,7 +132,20 @@ const ContextProvider = ({ children }) => {
     connectionRef.current.destroy();
     window.location.reload();
   };
-  const handleCallFriend = () => {};
+  const handleCallFriend = async (id_Friend) => {
+    console.log("id_Friend", id_Friend);
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/api/messages/call",
+        {
+          id_Friend: id_Friend,
+        }
+      );
+      console.log("check id socket Friend =>", response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <SocketContext.Provider
       value={{

@@ -16,7 +16,7 @@ const Chat = () => {
   const [inputUser, setinputUser] = useState("");
   const [listUser, setListUser] = useState([]);
   const [NguoiMaBanMuonNhanTin, setNguoiMaBanMuonNhanTin] = useState();
-
+  const [id_Friend, setId_Friend] = useState();
   const [IdCoversation, setIdCoversation] = useState("");
 
   const id = useParams();
@@ -80,6 +80,7 @@ const Chat = () => {
     const fetchListUser = async () => {
       try {
         const response = await axios.get(`${ENDPOINT}/api/users/allusers`);
+        console.log("list user =>", response.data);
         setListUser(response.data);
       } catch (error) {
         console.error("Error fetching list of users:", error);
@@ -180,8 +181,9 @@ const Chat = () => {
 
   const [ImageUserWantMess, setImageUserWantMess] = useState();
 
-  console.log("hi", ImageUserWantMess);
   const handleUserIb = async (user) => {
+    setId_Friend(user._id);
+
     try {
       // Gửi yêu cầu POST đến server
       const response = await axios.post(
@@ -270,39 +272,6 @@ const Chat = () => {
   };
   // console.log("nguoima ban muon nhan tin =>", NguoiMaBanMuonNhanTin);
   return (
-    // <div>
-    //   <h3>All User</h3>
-    //   <div>
-    //     {listUser.map((user, index) => (
-    //       <div key={index}>
-    //         <strong>{user.username}: </strong>
-    //       </div>
-    //     ))}
-    //   </div>
-    //   <h1>Realtime Chat App</h1>
-    //   <div>
-    //     {messages.map((message, index) => (
-    //       <div key={index}>
-    //         <strong>{message.name}: </strong>
-    //         {message.message}
-    //       </div>
-    //     ))}
-    //   </div>
-    //   <div>
-    //     <input
-    //       type="text"
-    //       value={inputUser}
-    //       onChange={(e) => setinputUser(e.target.value)}
-    //     />
-    //     <input
-    //       type="text"
-    //       value={inputMess}
-    //       onChange={(e) => setinputMess(e.target.value)}
-    //     />
-    //     <button onClick={sendMessage}>Send</button>
-    //   </div>
-    // </div>
-
     <>
       <div className="container-chat">
         <div className="container-chat_Navbar">
@@ -418,7 +387,7 @@ const Chat = () => {
                 <div className="NoiDungChat-Navbar-3-phone">
                   <i
                     class="fa-solid fa-phone"
-                    onClick={() => handleCallFriend()}
+                    onClick={() => handleCallFriend(id_Friend)}
                   ></i>
                 </div>
                 <div className="NoiDungChat-Navbar-3-phone margin10px">
