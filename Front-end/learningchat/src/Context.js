@@ -1,32 +1,42 @@
 import { createContext, useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
-import { useParams } from "react-router-dom";
 import axios from "axios";
+
 const SocketContext = createContext();
-const socket = io("http://localhost:5000");
+const socket = io("http://localhost:3001");
 
 const ContextProvider = ({ children }) => {
+  const [call, setCall] = useState({});
   const [callAccepted, setCallAccepted] = useState(false);
   const [callEnded, setCallEnded] = useState(false);
   const [stream, setStream] = useState(null);
   const [name, setName] = useState("");
-  const [call, setCall] = useState({});
   const [me, setMe] = useState("");
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
-  const [isCameraOn, setIsCameraOn] = useState(true); // Trạng thái camera mặc định là bật
 
   useEffect(() => {
-    socket.on("me", (id) => setMe(id));
+    socket.on("me", (id) => {
+      console.log("Received 'me' event: ", id);
+      setMe(id);
+    });
+
     socket.on("callUser", ({ from, name: callerName, signal }) => {
+      console.log("Received 'callUser' event: ", { from, callerName, signal });
       setCall({ isReceivingCall: true, from, name: callerName, signal });
     });
+
+    return () => {
+      socket.off("me");
+      socket.off("callUser");
+    };
   }, []);
 
+  console.log("call ->", call);
+
   const getMediaStream = async (isVideo = true, isAudio = true) => {
-    // Thêm mặc định là true cho isVideo và isAudio
     try {
       const currentStream = await navigator.mediaDevices.getUserMedia({
         video: isVideo,
@@ -41,42 +51,7 @@ const ContextProvider = ({ children }) => {
       console.error("Error accessing media devices.", error);
     }
   };
-  const handleGetMediaStream = async () => {
-    try {
-      if (isCameraOn) {
-        try {
-          const currentStream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-            audio: true,
-          });
-          setStream(currentStream);
-          if (myVideo.current) {
-            myVideo.current.srcObject = currentStream;
-          }
-          return currentStream;
-        } catch (error) {
-          console.error("Error accessing media devices.", error);
-        }
-      } else {
-        try {
-          const currentStream = await navigator.mediaDevices.getUserMedia({
-            video: false,
-            audio: false,
-          });
-          setStream(currentStream);
-          if (myVideo.current) {
-            myVideo.current.srcObject = currentStream;
-          }
-          return currentStream;
-        } catch (error) {
-          console.error("Error accessing media devices.", error);
-        }
-      }
-      setIsCameraOn(!isCameraOn); // Đảo ngược trạng thái camera sau khi thực hiện thành công
-    } catch (error) {
-      console.error("Error accessing media devices:", error);
-    }
-  };
+
   const answerCall = async () => {
     setCallAccepted(true);
     const currentStream = await getMediaStream();
@@ -119,11 +94,6 @@ const ContextProvider = ({ children }) => {
       userVideo.current.srcObject = currentStream;
     });
 
-    socket.on("callAccepted", (signal) => {
-      setCallAccepted(true);
-      peer.signal(signal);
-    });
-
     connectionRef.current = peer;
   };
 
@@ -132,6 +102,7 @@ const ContextProvider = ({ children }) => {
     connectionRef.current.destroy();
     window.location.reload();
   };
+
   const handleCallFriend = async (id_Friend) => {
     console.log("id_Friend", id_Friend);
     try {
@@ -141,11 +112,13 @@ const ContextProvider = ({ children }) => {
           id_Friend: id_Friend,
         }
       );
-      console.log("check id socket Friend =>", response.data);
+      console.log("check id socket Friend =>", response.data.idVideoMe);
+      callUser(response.data.idVideoMe);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <SocketContext.Provider
       value={{
@@ -162,9 +135,6 @@ const ContextProvider = ({ children }) => {
         leaveCall,
         answerCall,
         getMediaStream,
-        isCameraOn,
-        handleGetMediaStream,
-
         handleCallFriend,
       }}
     >

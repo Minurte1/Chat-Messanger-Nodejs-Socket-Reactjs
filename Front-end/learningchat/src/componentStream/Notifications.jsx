@@ -1,22 +1,39 @@
-
-import { useContext } from "react"
-import { Box, Button, Heading } from "@chakra-ui/react"
-import { SocketContext } from "../Context"
+import { useContext, useEffect, useState } from "react";
+import { Button, Modal } from "react-bootstrap";
+import { SocketContext } from "../Context";
 
 const Notifications = () => {
     const { answerCall, call, callAccepted } = useContext(SocketContext);
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    useEffect(() => {
+        console.log('check co call k? ', call)
+        if (call.isReceivingCall && !callAccepted) {
+            handleShow();
+        }
+    }, [call, callAccepted]);
 
     return (
         <>
-            {call.isReceivingCall && !callAccepted && (
-                <Box display="flex" justifyContent="space-around" mb="20">
-                    <Heading as="h3"> {call.name} is calling </Heading>
-                    <Button variant="outline" onClick={answerCall} border="1px" borderStyle="solid" borderColor="black">
+            <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>{call} is calling</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Bạn có muốn nhận cuộc gọi không?</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={answerCall}>
                         Answer Call
                     </Button>
-                </Box>
-            )}
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
-    )
-}
-export default Notifications
+    );
+};
+
+export default Notifications;

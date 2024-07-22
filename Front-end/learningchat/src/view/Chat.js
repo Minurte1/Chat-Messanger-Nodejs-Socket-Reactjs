@@ -7,6 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { set } from "mongoose";
 import { toast } from "react-toastify";
 import { SocketContext } from "../Context";
+import Notifications from "../componentStream/Notifications";
+import Option from "../componentStream/Option";
+import VideoPlayer from "../componentStream/VideoPlayer";
 const ENDPOINT = "http://localhost:3001"; // Địa chỉ của server Node.js
 const socket = io(ENDPOINT);
 const Chat = () => {
@@ -646,6 +649,9 @@ const Chat = () => {
           </div>
         </div>
       </div>
+      <Option />
+      <VideoPlayer />
+      <Notifications />
     </>
   );
 };
