@@ -17,21 +17,28 @@ const ContextProvider = ({ children }) => {
   const userVideo = useRef();
   const connectionRef = useRef();
 
-  useEffect(() => {
-    socket.on("me", (id) => {
-      console.log("Received 'me' event: ", id);
-      setMe(id);
-    });
+  // useEffect(() => {
+  //   socket.on("me", (id) => {
+  //     console.log("Received 'me' event: ", id);
+  //     setMe(id);
+  //   });
 
+  //   socket.on("callUser", ({ from, name: callerName, signal }) => {
+  //     console.log("Received 'callUser' event: ", { from, callerName, signal });
+  //     setCall({ isReceivingCall: true, from, name: callerName, signal });
+  //   });
+
+  //   return () => {
+  //     socket.off("me");
+  //     socket.off("callUser");
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    socket.on("me", (id) => setMe(id));
     socket.on("callUser", ({ from, name: callerName, signal }) => {
-      console.log("Received 'callUser' event: ", { from, callerName, signal });
       setCall({ isReceivingCall: true, from, name: callerName, signal });
     });
-
-    return () => {
-      socket.off("me");
-      socket.off("callUser");
-    };
   }, []);
 
   console.log("call ->", call);
