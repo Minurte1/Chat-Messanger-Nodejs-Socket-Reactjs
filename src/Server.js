@@ -46,7 +46,8 @@ io.on("connection", (socket) => {
   socket.on("idUserdatabse", async (data) => {
     const username_video = data;
     console.log("Received customEvent with myVariable:", username_video);
-
+    console.log("Received customEvent with myVariable:", username_video); 
+    console.log("Received customEvent with myVariable:", username_video);
     try {
       const updateResult = await IdVideo.findOneAndUpdate(
         { username_video },
