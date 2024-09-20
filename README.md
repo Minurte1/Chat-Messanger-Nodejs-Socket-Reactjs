@@ -7,7 +7,6 @@
 - [Tổng quan](#tổng-quan)
 - [Cài đặt môi trường](#cài-đặt-môi-trường)
 - [Cách sử dụng](#cách-sử-dụng)
-- [Cấu trúc dự án](#cấu-trúc-dự-án)
 - [Các tính năng](#các-tính-năng)
 - [Liên hệ](#liên-hệ)
 
@@ -51,3 +50,10 @@ cd frontend
 npm start
 ``
 Mở trình duyệt và truy cập http://localhost:3000 để sử dụng ứng dụng.
+## Các Chức Năng
+- Đăng Nhập, đăng ký giữa các người dùng
+- Nhắn tin lưu trữ tin nhắn giữa các người dùng
+- Thay đổi ảnh đại diện người dùng
+## Liên hệ
+gmail: hohoangphucjob@gmail.com
+phone: 0327434821
