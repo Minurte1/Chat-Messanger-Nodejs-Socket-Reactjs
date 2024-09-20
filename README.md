@@ -55,5 +55,5 @@ Mở trình duyệt và truy cập http://localhost:3000 để sử dụng ứng
 - Nhắn tin lưu trữ tin nhắn giữa các người dùng
 - Thay đổi ảnh đại diện người dùng
 ## Liên hệ
-gmail: hohoangphucjob@gmail.com
+email: hohoangphucjob@gmail.com
 
