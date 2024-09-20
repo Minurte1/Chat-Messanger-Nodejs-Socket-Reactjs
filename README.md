@@ -28,7 +28,7 @@
 ### Cài đặt
 1. Clone repository:
    ```bash
-   git clone https://github.com/yourusername/chat-messenger.git
+   git clone [https://github.com/yourusername/chat-messenger.git](https://github.com/Minurte1/Chat-Messanger-Nodejs-Socket-Reactjs.git)
    cd chat-messenger
 2. Cài đặt backend:
   `
